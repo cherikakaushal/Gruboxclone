@@ -77,22 +77,61 @@
 }
 
 .gradient-navbar {
-  background: linear-gradient(to right, #121212, #1e1e1e);
-  color: #f4f4f4; /* better contrast */
+  background: linear-gradient(to right, #000000cc, #111111cc);
+  color: white;
 }
 
-.card-glass {
-  background: rgba(255, 255, 255, 0.9);
-  color: #111; /* readable text */
+.nav-link {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.nav-signin {
- .sign-in-link {
-  color: white !important;
+.nav-link:hover,
+.nav-link:focus {
+  color: #00BCD4;
+  outline: none;
 }
 
+.w3-button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }
-.sign-in-link:hover {
-  color: #ffd75c;
-  transition: 0.3s;
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: white;
+}
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  background-color: #111;
+  padding: 10px 0;
+}
+
+.mobile-nav a {
+  padding: 10px 16px;
+  border-bottom: 1px solid #333;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .w3-hide-small {
+    display: none !important;
+  }
+
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 18px;
+  }
+
+  .mobile-nav.active {
+    display: flex;
+  }
 }
