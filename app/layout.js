@@ -1,4 +1,5 @@
 // app/layout.js
+"use client";
 import "./globals.css";
 import Navbar from "../components/navbar/navbar"; // client component ("use client" inside)
 
