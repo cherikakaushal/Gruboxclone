@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './navbar.css';
 
 const GruboxNavbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <header
       className="w3-top w3-card w3-animate-top gradient-navbar"
@@ -25,18 +27,23 @@ const GruboxNavbar = () => {
             letterSpacing: '1px',
           }}
         >
-          <span style={{ fontSize: '1.6rem' }}></span> Grubox
+          Grubox
         </a>
 
-        {/* Navigation Menu */}
+        {/* Hamburger Icon (for mobile) */}
+        <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+          ☰
+        </div>
+
+        {/* Desktop Nav */}
         <nav
           className="w3-hide-small w3-bar w3-center"
           role="navigation"
           style={{ display: 'inline-block' }}
         >
           <a href="/corporate" className="w3-bar-item w3-button nav-link">Corporate Services</a>
-          <a href="/meal" className="w3-bar-item w3-button w3-hover-text-cyan">Meal Plans</a>
-          <a href="/become-a-partner" className="w3-bar-item w3-button w3-hover-text-cyan">Join Us as a Franchise</a>
+          <a href="/meal" className="w3-bar-item w3-button nav-link">Meal Plans</a>
+          <a href="/become-a-partner" className="w3-bar-item w3-button nav-link">Join Us as a Franchise</a>
           <a href="/blogs" className="w3-bar-item w3-button nav-link">Blogs</a>
           <a href="/about" className="w3-bar-item w3-button nav-link">About Us</a>
           <a href="/contact" className="w3-bar-item w3-button nav-link">Contact Us</a>
@@ -44,25 +51,48 @@ const GruboxNavbar = () => {
 
         {/* CTA Buttons */}
         <div className="w3-right w3-hide-small">
-          <a href="/signin" className="w3-bar-item w3-button" style={{ color: 'white' }}>Sign In </a>
+          <a href="/signin" className="w3-bar-item w3-button" style={{ color: 'white' }}>Sign In</a>
           <a
-  href="/getStarted"
-  className="w3-button w3-round-large w3-medium get-started"
-  style={{
-    backgroundColor: '#FFC107',
-    color: 'black',
-    marginLeft: '8px',
-    fontWeight: 600,
-  }}
->
-  Get Started
-</a>
-
+            href="/getStarted"
+            className="w3-button w3-round-large w3-medium get-started"
+            style={{
+              backgroundColor: '#FFC107',
+              color: 'black',
+              marginLeft: '8px',
+              fontWeight: 600,
+            }}
+          >
+            Get Started
+          </a>
         </div>
+      </div>
+
+      {/* Mobile Nav Links */}
+      <div className={`mobile-nav ${menuOpen ? 'active' : ''}`}>
+        <a href="/corporate">Corporate Services</a>
+        <a href="/meal">Meal Plans</a>
+        <a href="/become-a-partner">Join Us as a Franchise</a>
+        <a href="/blogs">Blogs</a>
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact Us</a>
+        <a href="/signin">Sign In</a>
+        <a
+          href="/getStarted"
+          style={{
+            backgroundColor: '#FFC107',
+            color: 'black',
+            margin: '10px 16px',
+            padding: '10px',
+            borderRadius: '10px',
+            fontWeight: 600,
+            textAlign: 'center',
+          }}
+        >
+          Get Started
+        </a>
       </div>
     </header>
   );
 };
 
 export default GruboxNavbar;
-
