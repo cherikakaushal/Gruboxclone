@@ -1,81 +1,75 @@
 "use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./navbar.css";
 
-const GruboxNavbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function GruboxNavbar() {
+  const [open, setOpen] = useState(false);
+
+  // Close mobile menu on desktop resize
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth >= 992) setOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const closeOnClick = () => setOpen(false);
 
   return (
-    <header
-      className="w3-top w3-card w3-animate-top gradient-navbar"
-      role="banner"
-      style={{ padding: "8px 0", backdropFilter: "blur(10px)", zIndex: 9999 }}
-    >
-      <div className="w3-bar w3-padding w3-large w3-center" role="navigation" aria-label="Main navigation">
-        <a
-          href="/"
-          className="w3-bar-item w3-xlarge w3-bold"
-          style={{ color: "#00BCD4", fontFamily: "Raleway, sans-serif", fontWeight: 800, letterSpacing: "1px" }}
-        >
-          Grubox
+    <header className={`nav-root ${open ? "nav-open" : ""}`} role="banner">
+      <div className="nav-inner">
+        {/* Brand */}
+        <a href="/" className="brand" aria-label="Grubox Home">
+          <span className="brand-accent">Gru</span>
+          <span className="brand-rest">box</span>
         </a>
 
-        {/* Hamburger (mobile) */}
-        <button
-          aria-label="Toggle navigation"
-          className="hamburger w3-button"
-          onClick={() => setMenuOpen((v) => !v)}
-        >
-          ☰
-        </button>
-
-        {/* Desktop nav */}
-        <nav className="w3-hide-small w3-bar w3-center" role="navigation" style={{ display: "inline-block" }}>
-          <a href="/corporate" className="w3-bar-item w3-button nav-link">Corporate Services</a>
-          <a href="/meal" className="w3-bar-item w3-button nav-link">Meal Plans</a>
-          <a href="/become-a-partner" className="w3-bar-item w3-button nav-link">Join Us as a Franchise</a>
-          <a href="/blogs" className="w3-bar-item w3-button nav-link">Blogs</a>
-          <a href="/about" className="w3-bar-item w3-button nav-link">About Us</a>
-          <a href="/contact" className="w3-bar-item w3-button nav-link">Contact Us</a>
+        {/* Desktop menu */}
+        <nav className="menu-desktop" role="navigation" aria-label="Main">
+          <a href="/corporate" className="menu-link">Corporate Services</a>
+          <a href="/meal" className="menu-link">Meal Plans</a>
+          <a href="/become-a-partner" className="menu-link">Join Us as a Franchise</a>
+          <a href="/blogs" className="menu-link">Blogs</a>
+          <a href="/about" className="menu-link">About Us</a>
+          <a href="/contact" className="menu-link">Contact Us</a>
         </nav>
 
         {/* Desktop CTAs */}
-        <div className="w3-right w3-hide-small">
-          <a href="/signin" className="w3-bar-item w3-button" style={{ color: "white" }}>Sign In</a>
-          <a href="/getStarted" className="w3-button w3-round-large w3-medium get-started"
-             style={{ backgroundColor: "#FFC107", color: "black", marginLeft: 8, fontWeight: 600 }}>
-            Get Started
-          </a>
+        <div className="cta-desktop">
+          <a href="/signin" className="btn ghost">Sign In</a>
+          <a href="/getStarted" className="btn primary">Get Started</a>
         </div>
+
+        {/* Hamburger (mobile) */}
+        <button
+          className={`hamburger ${open ? "is-active" : ""}`}
+          aria-label="Toggle navigation"
+          aria-controls="mobile-panel"
+          aria-expanded={open}
+          onClick={() => setOpen(v => !v)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
 
-      {/* Mobile menu */}
-      <div className={`mobile-nav ${menuOpen ? "active" : ""}`}>
-        <a href="/corporate">Corporate Services</a>
-        <a href="/meal">Meal Plans</a>
-        <a href="/become-a-partner">Join Us as a Franchise</a>
-        <a href="/blogs">Blogs</a>
-        <a href="/about">About Us</a>
-        <a href="/contact">Contact Us</a>
-        <a href="/signin">Sign In</a>
-        <a
-          href="/getStarted"
-          style={{
-            backgroundColor: "#FFC107",
-            color: "black",
-            margin: "10px 16px",
-            padding: 10,
-            borderRadius: 10,
-            fontWeight: 600,
-            textAlign: "center",
-          }}
-        >
-          Get Started
-        </a>
+      {/* Mobile panel */}
+      <div id="mobile-panel" className={`mobile-panel ${open ? "show" : ""}`}>
+        <nav className="mobile-menu" role="navigation" aria-label="Mobile">
+          <a href="/corporate" onClick={closeOnClick}>Corporate Services</a>
+          <a href="/meal" onClick={closeOnClick}>Meal Plans</a>
+          <a href="/become-a-partner" onClick={closeOnClick}>Join Us as a Franchise</a>
+          <a href="/blogs" onClick={closeOnClick}>Blogs</a>
+          <a href="/about" onClick={closeOnClick}>About Us</a>
+          <a href="/contact" onClick={closeOnClick}>Contact Us</a>
+        </nav>
+        <div className="mobile-ctas">
+          <a href="/signin" className="btn ghost" onClick={closeOnClick}>Sign In</a>
+          <a href="/getStarted" className="btn primary block" onClick={closeOnClick}>Get Started</a>
+        </div>
       </div>
     </header>
   );
-};
-
-export default GruboxNavbar;
+}
