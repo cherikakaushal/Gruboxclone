@@ -1,13 +1,15 @@
 // app/layout.js
 import "./globals.css";
-import Navbar from "../components/navbar/navbar"; // client component (has "use client")
+import Navbar from "../components/navbar/navbar"; // client component with "use client" at top
 
 export const metadata = {
   title: "Grubox | Healthy Office Meals in Gurgaon, Noida & Delhi",
   description:
     "Order fresh, nutritious Indian meals delivered daily to your office. Grubox offers meal plans, subscriptions, and corporate food delivery across NCR.",
   metadataBase: new URL("https://services.grubox.in"),
-  alternates: { canonical: "https://services.grubox.in" },
+  alternates: {
+    canonical: "https://services.grubox.in",
+  },
   robots: "index, follow",
   openGraph: {
     title: "Grubox | Healthy Office Meals",
@@ -25,7 +27,7 @@ export default function RootLayout({ children }) {
         {/* Meta viewport for responsiveness */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        {/* Favicons */}
+        {/* Favicon links */}
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -34,8 +36,11 @@ export default function RootLayout({ children }) {
         <meta name="msapplication-TileColor" content="#2b5797" />
         <link rel="shortcut icon" href="/favicon.ico" />
 
-        {/* W3.CSS */}
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+        {/* W3.CSS framework */}
+        <link
+          rel="stylesheet"
+          href="https://www.w3schools.com/w3css/5/w3.css"
+        />
 
         {/* Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -59,10 +59,20 @@ const GruboxNavbar = () => {
         <a href="/about">About Us</a>
         <a href="/contact">Contact Us</a>
         <a href="/signin">Sign In</a>
-        <a href="/getStarted" style={{
-          backgroundColor: "#FFC107", color: "black", margin: "10px 16px", padding: 10,
-          borderRadius: 10, fontWeight: 600, textAlign: "center"
-        }}>Get Started</a>
+        <a
+          href="/getStarted"
+          style={{
+            backgroundColor: "#FFC107",
+            color: "black",
+            margin: "10px 16px",
+            padding: 10,
+            borderRadius: 10,
+            fontWeight: 600,
+            textAlign: "center",
+          }}
+        >
+          Get Started
+        </a>
       </div>
     </header>
   );
