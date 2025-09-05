@@ -1,135 +1,180 @@
-.contact-container {
-  padding: 64px 24px;
-  background: #f9f9f9;
+/* components/contact/contact.css — 3D form card, gradient borders, polished controls */
+
+:root{
+  --card: var(--card, #ffffff);
+  --text: var(--text, #0b0b0b);
+  --muted: var(--muted, #59616a);
+  --border: var(--border, #e7ebf0);
+  --accent: var(--accent, #00bcd4);
+  --brand: var(--brand, #FFC107);
+
+  --g1: #00bcd4;
+  --g2: #59d9f7;
+  --g3: #ffd75c;
+  --g4: #ff9f1a;
+
+  --ring: 0 0 0 3px color-mix(in srgb, var(--accent), transparent 70%);
+  --shadow-s: 0 8px 18px rgba(10, 22, 50, .08);
+  --shadow-m: 0 18px 36px rgba(10, 22, 50, .10);
+  --shadow-l: 0 35px 60px rgba(10, 22, 50, .14);
 }
 
-.contact-header {
-  text-align: center;
-  margin-bottom: 48px;
+/* Layout */
+.cx-grid{
+  display:grid; gap: clamp(14px, 2.4vw, 24px);
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+}
+@media (max-width: 980px){ .cx-grid{ grid-template-columns: 1fr; } }
+
+/* Base card with gradient border */
+.cx-card{
+  border-radius: 22px;
+  padding: clamp(16px, 2.6vw, 26px);
+  background:
+    linear-gradient(0deg, color-mix(in srgb, var(--card), transparent 0%), color-mix(in srgb, var(--card), transparent 0%)) padding-box,
+    linear-gradient(135deg, color-mix(in srgb, var(--g1), transparent 45%), color-mix(in srgb, var(--g3), transparent 45%)) border-box;
+  border:1px solid transparent;
+  box-shadow: var(--shadow-m);
 }
 
-.contact-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary-dark);
-}
+/* Glass feel + 3D lift for the main form */
+.cx-glass{ backdrop-filter: saturate(160%) blur(10px); }
 
-.contact-header p {
-  color: #666;
-  font-size: 1.2rem;
-  margin-top: 12px;
-}
-
-.contact-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-  justify-content: center;
-}
-
-.contact-info,
-.contact-form {
-  flex: 1 1 400px;
-  max-width: 500px;
-}
-
-.contact-info {
-  background: var(--primary-color);
-  color: #fff;
-  border-radius: 12px;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.contact-info h3 {
-  font-size: 1.5rem;
-}
-
-.contact-info p,
-.contact-info a {
-  color: #fff;
-  font-size: 1rem;
-  text-decoration: none;
-}
-
-.contact-form form {
-  background: #fff;
-  border-radius: 12px;
-  padding: 32px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.contact-form input,
-.contact-form textarea {
-  padding: 12px 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  width: 100%;
-}
-
-.contact-form textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-
-.contact-form button {
-  background: var(--primary-dark);
-  color: #fff;
-  padding: 14px 24px;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.contact-form button:hover {
-  background: var(--primary-color);
-}
-
-.animated-aura-section {
+/* << New 3D treatment >> */
+.cx-3d{
   position: relative;
-  z-index: 1;
-  padding: 80px 20px;
-  text-align: center;
-  overflow: hidden;
-  background: #0f1014;
+  transform-style: preserve-3d;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.65) inset,
+    0 -1px 0 rgba(10,10,10,.04) inset,
+    var(--shadow-s), var(--shadow-m), var(--shadow-l);
+}
+.cx-3d::after{
+  content:"";
+  position:absolute; inset:-1px;
+  border-radius:inherit;
+  background: radial-gradient(1000px 180px at 50% -60px, rgba(255,255,255,.55), transparent 60%);
+  pointer-events:none;
+  transform: translateZ(1px);
+}
+.cx-tilt:hover{
+  transform: perspective(1200px) rotateX(1.1deg) rotateY(-.8deg) translateY(-1px);
+  transition: transform .25s ease;
 }
 
-.animated-gradient-aura {
-  position: relative;
-  z-index: 2;
+/* Gradient accent border on both cards */
+.cx-card-gradient{ position:relative; }
+html[data-theme="dark"] .cx-card{
+  background:
+    linear-gradient(0deg, color-mix(in srgb, #0f171c, transparent 0%), color-mix(in srgb, #0f171c, transparent 0%)) padding-box,
+    linear-gradient(135deg, color-mix(in srgb, var(--g1), transparent 58%), color-mix(in srgb, var(--g3), transparent 58%)) border-box;
+  box-shadow: 0 26px 50px rgba(0,0,0,.42);
 }
 
-.animated-aura-section::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at 30% 30%, #00b4d8, #8338ec, #ff006e);
-  background-size: 400% 400%;
-  animation: pulseGradient 15s ease infinite;
-  opacity: 0.2;
-  filter: blur(100px);
-  z-index: 0;
+/* Segmented control */
+.cx-seg{
+  position:relative; display:grid; grid-template-columns: repeat(4, 1fr);
+  gap:8px; background: color-mix(in srgb, var(--card), transparent 8%);
+  border:1px solid var(--border); border-radius: 16px; padding:8px; margin-bottom: 16px;
+}
+.cx-seg-indicator{
+  position:absolute; inset:8px auto 8px 8px; width:calc(25% - 0px); border-radius:12px;
+  transition: transform .22s ease;
+  z-index:0;
+}
+.cx-seg-gradient{
+  background: linear-gradient(90deg, color-mix(in srgb, var(--g1), transparent 22%), color-mix(in srgb, var(--g3), transparent 22%));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent), transparent 55%), 0 12px 22px rgba(0,0,0,.09);
+}
+.cx-seg-btn{
+  position:relative; z-index:1; display:flex; flex-direction:column; align-items:flex-start;
+  gap:3px; border:0; background:transparent; padding:8px 10px; cursor:pointer;
+  text-align:left; border-radius:10px; color: var(--muted); font-weight:800;
+}
+.cx-seg-btn.on{ color: var(--text); font-weight:950; }
+
+/* Form */
+.cx-form{ display:grid; gap: 14px; }
+.cx-two{ display:grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+@media (max-width: 720px){ .cx-two{ grid-template-columns: 1fr; } }
+
+.cx-field{ display:flex; flex-direction:column; gap:8px; }
+.cx-label{
+  font-weight:950; color: var(--text); letter-spacing:.2px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--text), transparent 0%), color-mix(in srgb, var(--text), transparent 0%));
+  -webkit-background-clip: text; background-clip: text;
 }
 
-@keyframes pulseGradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.cx-input{
+  width:100%; border:1px solid var(--border);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card), transparent 0%), color-mix(in srgb, var(--card), transparent 0%));
+  color: var(--text); border-radius: 14px; padding: 12px 14px; outline:none; font: inherit;
+  transition: border-color .15s, box-shadow .15s, background .15s, transform .05s;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65), inset 0 -1px 0 rgba(0,0,0,.04);
 }
+.cx-input:focus{
+  border-color: var(--accent);
+  box-shadow: var(--ring), inset 0 1px 0 rgba(255,255,255,.65);
+  transform: translateZ(1px);
+}
+.cx-textarea{ resize: vertical; min-height: 140px; }
+
+/* Callback radio chips (with check) */
+.cx-chips{ display:flex; gap:10px; flex-wrap:wrap; }
+.cx-chip-select input{ display:none; }
+.cx-chip-pill{
+  display:inline-flex; align-items:center; gap:8px; padding:10px 15px; border-radius:999px;
+  border:1px solid var(--border);
+  background: linear-gradient(0deg, color-mix(in srgb, var(--card), transparent 0%), color-mix(in srgb, var(--card), transparent 0%));
+  color: var(--text); font-weight:900; cursor:pointer;
+  transition: transform .1s ease, box-shadow .18s ease, border-color .2s, background .2s;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+}
+.cx-chip-select input:checked + .cx-chip-pill{
+  border-color: color-mix(in srgb, var(--accent), transparent 40%);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--g1), transparent 78%), color-mix(in srgb, var(--g3), transparent 78%));
+  box-shadow: 0 12px 24px rgba(0,0,0,.10), inset 0 0 0 999px color-mix(in srgb, #fff, transparent 68%);
+  transform: translateY(-1px);
+}
+.cx-chip-select input:checked + .cx-chip-pill::before{
+  content: "✓";
+  font-weight:950; margin-right:2px;
+}
+
+/* Primary action */
+.cx-btn{
+  display:inline-flex; align-items:center; justify-content:center; width:100%;
+  border-radius: 14px; padding: 14px 16px; border:1px solid transparent; font-weight:950; cursor:pointer;
+  transition: transform .08s, box-shadow .18s, filter .18s;
+}
+.cx-primary-gradient{
+  background: linear-gradient(90deg, var(--g3), var(--g4));
+  color:#0b0b0b; box-shadow: 0 18px 32px rgba(255,193,7,.30), inset 0 -2px 0 rgba(0,0,0,.12);
+}
+.cx-primary-gradient:hover{ transform: translateY(-1px); box-shadow: 0 26px 40px rgba(255,193,7,.36); }
+.cx-primary-gradient:disabled{ filter: grayscale(.45) brightness(.95); cursor:not-allowed; }
+
+/* Sidebar */
+.cx-side{ position: sticky; top: 16px; height: fit-content; }
+.cx-status{ display:flex; align-items:center; gap:10px; font-weight:950; margin-bottom: 12px; }
+.cx-bullet{ width:10px;height:10px;border-radius:999px;background:#22c55e; box-shadow:0 0 0 4px rgba(34,197,94,.16); }
+.cx-list{ display:grid; gap: 10px; margin: 8px 0 14px; }
+.cx-list-item{ display:flex; justify-content:space-between; gap: 14px; }
+.cx-list-label{ color: var(--muted); font-weight:900; }
+.cx-list-action{ color: var(--text); font-weight:950; text-decoration:none; }
+.cx-list-action:hover{ text-decoration:underline; }
+.cx-note{ color: var(--muted); font-weight:800; }
+
+/* Success state */
+.cx-stack{ display:grid; gap: 16px; }
+.cx-success .cx-emoji{ font-size: 38px; margin-bottom: 6px; }
+.cx-h3{ margin: 0 0 6px; font-size: 22px; font-weight: 950; }
+.cx-muted{ color: var(--muted); }
+.cx-row.gap{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
+.cx-chip{
+  display:inline-flex; align-items:center; gap:8px; padding:10px 15px; border-radius:999px;
+  border:1px solid var(--border); text-decoration:none; color: var(--text);
+  background: linear-gradient(0deg, color-mix(in srgb, var(--card), transparent 0%), color-mix(in srgb, var(--card), transparent 0%));
+  font-weight:900;
+}
+.cx-chip:hover{ box-shadow: 0 10px 18px rgba(0,0,0,.12); transform: translateY(-1px); }
