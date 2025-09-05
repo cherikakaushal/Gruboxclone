@@ -1,0 +1,28 @@
+.blog-card {
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.blog-image {
+  height: 180px;
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.read-more-btn {
+  background-color: #0da8e0;
+  color: white;
+  text-decoration: none;
+}
+
+.read-more-btn:hover {
+  background-color: #00789d;
+  color: #fff;
+}

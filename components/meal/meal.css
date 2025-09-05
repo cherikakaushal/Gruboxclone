@@ -1,0 +1,51 @@
+/* components/meal/meal.css */
+
+.meal-section {
+  background: #f7f7f7;
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.meal-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.meal-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.card-glass {
+  /* If you prefer glassmorphism */
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+}
+
+.order-btn {
+  background-color: #FFB300;
+  color: #333;
+  margin-top: 16px;
+  font-weight: bold;
+}
+
+.order-btn:hover {
+  background-color: #ffa000;
+}
+
+.step-circle {
+  background-color: #00BCD4;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 50%;
+  margin: auto;
+  margin-bottom: 8px;
+}

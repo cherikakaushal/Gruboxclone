@@ -1,0 +1,30 @@
+.gradient-bg-glass {
+  background: linear-gradient(135deg, #fff7e0, #fff3c0); /* warm yellow gradient */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 40px rgba(255, 215, 92, 0.1);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.gradient-bg-glass-alt {
+  background: linear-gradient(to right, #ffecd2, #fcb69f); /* soft coral-pink alt */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px;
+  box-shadow: inset 0 0 25px rgba(255, 179, 71, 0.15);
+}
+
+.card-glass {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+  padding: 24px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-glass:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}

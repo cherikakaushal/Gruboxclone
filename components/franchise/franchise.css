@@ -1,0 +1,33 @@
+.franchise-section {
+  background: #f9f9f9;
+}
+
+.franchise-card {
+  padding: 32px;
+  border-radius: 16px;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.franchise-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+
+.franchise-btn {
+  background-color: #ffd75c;
+  color: #333;
+  font-weight: bold;
+  padding: 14px 30px;
+  text-decoration: none;
+}
+
+.franchise-btn:hover {
+  background-color: #ffcc33;
+  color: #000;
+}
+
+.franchise-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
