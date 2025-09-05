@@ -281,3 +281,61 @@ body, .gs-page{ background: var(--bg); color: var(--text); }
 .sr-only{
   position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
 }
+
+/* ===== Light-mode hardening: enforce readable text on bright surfaces ===== */
+html[data-theme="light"] {
+  /* make absolutely sure light tokens are used */
+  --bg: #f7f9fc;
+  --text: #0b0b0b;
+  --muted: #5a6570;
+  --card: #ffffff;
+  --card-2: #ffffff;
+  --border: #dfe4ea;
+  --glass-fill: rgba(255,255,255,.78);
+  --glass-border: rgba(0,0,0,.06);
+}
+
+/* Cards/panels must be bright with dark text */
+html[data-theme="light"] .gs-card,
+html[data-theme="light"] .glass,
+html[data-theme="light"] .glass-2,
+html[data-theme="light"] .gs-form-wrap {
+  background: #ffffff !important;
+  color: #0b0b0b !important;
+  border-color: #e7e7e7 !important;
+}
+
+/* Ensure children inherit readable text */
+html[data-theme="light"] .gs-card *:not(.btn):not(svg):not(path) {
+  color: #0b0b0b;
+}
+
+/* Tone down W3 grey on light so it’s actually legible */
+html[data-theme="light"] .w3-text-grey { color: #5c6670 !important; }
+
+/* Inputs/selects/textarea: white bg + dark text + clear placeholder */
+html[data-theme="light"] .field input,
+html[data-theme="light"] .field select,
+html[data-theme="light"] .field textarea {
+  background: #ffffff !important;
+  color: #0b0b0b !important;
+  border-color: #d7dbe0 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+html[data-theme="light"] .field input::placeholder,
+html[data-theme="light"] .field textarea::placeholder {
+  color: #8a949e;
+  opacity: 1;
+}
+
+/* Summary box text */
+html[data-theme="light"] .gs-summary,
+html[data-theme="light"] .gs-summary * { color: #1f2937; }
+
+/* Contact card lines */
+html[data-theme="light"] .gs-list li { color: #404b55; }
+
+/* Keep gradient hero white text only in the hero */
+.gradient-panel,
+.gradient-panel * { color: #ffffff; }

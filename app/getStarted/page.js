@@ -102,8 +102,8 @@ export default function GetStartedPage() {
                   href="https://www.instagram.com/grubox.in/reels/"
                   target="_blank"
                   rel="nofollow noopener noreferrer"
-                  aria-label="Follow Grubox on Instagram"
-                  title="Follow Grubox on Instagram"
+                  aria-label="Follow us on Instagram"
+                  title="Follow us on Instagram"
                   className="btn ig block"
                 >
                   <svg className="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -120,7 +120,7 @@ export default function GetStartedPage() {
                   href="https://in.linkedin.com/company/grubox"
                   target="_blank"
                   rel="nofollow noopener noreferrer"
-                  aria-label="Connect with Grubox on LinkedIn"
+                  aria-label="Connect  with  Grubox  on LinkedIn"
                   title="Connect with Grubox on LinkedIn"
                   className="btn li block"
                 >
