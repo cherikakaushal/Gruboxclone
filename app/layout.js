@@ -1,5 +1,11 @@
 // app/layout.js
 import "./globals.css";
+// app/layout.js (add below your globals.css)
+import "./about/about.css";
+import "../components/About/about.css";
+// app/layout.js
+import "./book-a-tasting/book.css";
+
 import Navbar from "../components/navbar/navbar"; // client component ("use client" inside)
 
 export const metadata = {

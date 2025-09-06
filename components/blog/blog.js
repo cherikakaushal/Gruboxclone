@@ -1,64 +1,118 @@
-import React from "react";
-import "./blog.css"; // Make sure this path is correct
+// components/blog/blog.js
+"use client";
 
-export default function Blogs() {
-  const blogPosts = [
-    {
-      title: "From ₹99 Meals to 24/7 Access: Why Smart Vending Is the Future of Corporate Dining",
-      description:
-        "Explore how Grubox’s smart vending and meal subscriptions are reshaping office dining with affordability, convenience, and tech innovation.",
-      date: "August 28, 2025",
-      image: "/assets/blog/vending-future.jpg",
-      link: "/blog/future-of-vending",
-    },
-    {
-      title: "Grubox vs Traditional Cafeterias: Which Offers Better ROI?",
-      description:
-        "A deep dive into operational cost, scalability, and employee satisfaction when comparing traditional food setups to Grubox vending + delivery.",
-      date: "July 14, 2025",
-      image: "/assets/blog/roi-comparison.jpg",
-      link: "/blog/roi-grubox-vs-cafeteria",
-    },
-    {
-      title: "How to Choose the Perfect Location for a Smart Vending Machine in Delhi NCR",
-      description:
-        "Get expert tips from the Grubox team on high-footfall zones, co-working hubs, and prime vending locations across Gurgaon, Noida, and Delhi.",
-      date: "June 30, 2025",
-      image: "/assets/blog/best-locations.jpg",
-      link: "/blog/vending-location-guide",
-    },
-  ];
+import { useMemo, useState } from "react";
+import "./blog.css";
+
+// deterministic date (prevents hydration diffs)
+const DATE_FMT = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "2-digit",
+});
+
+export default function Blog({ posts = [], sources = [] }) {
+  const [query, setQuery] = useState("");
+  const [active, setActive] = useState(new Set());
+
+  const toggleSource = (s) => {
+    const next = new Set(active);
+    next.has(s) ? next.delete(s) : next.add(s);
+    setActive(next);
+  };
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return posts.filter((p) => {
+      const matchesText =
+        !q ||
+        p.title.toLowerCase().includes(q) ||
+        (p.excerpt || "").toLowerCase().includes(q) ||
+        (p.source || "").toLowerCase().includes(q);
+      const matchesSource = active.size === 0 || active.has(p.source);
+      return matchesText && matchesSource;
+    });
+  }, [posts, query, active]);
 
   return (
-    <section className="w3-container w3-padding-64 w3-white">
-      <div className="w3-content">
-        <h2 className="w3-xxlarge w3-bold w3-center">Our Latest Blogs</h2>
-        <p className="w3-large w3-text-grey w3-center w3-padding-16">
-          Insights, guides & updates from the world of workplace meals, vending, and innovation.
-        </p>
+    <div>
+      {/* toolbar */}
+      <div className="blog-toolbar">
+        <input
+          className="blog-search"
+          type="search"
+          placeholder="Search posts…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          aria-label="Search blog posts"
+        />
 
-        <div className="w3-row-padding w3-margin-top">
-          {blogPosts.map((post, index) => (
-            <div className="w3-third w3-padding" key={index}>
-              <div className="w3-card-4 w3-round-large card-glass blog-card">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w3-image blog-image"
-                />
-                <div className="w3-container">
-                  <h3 className="w3-large w3-bold w3-text-black">{post.title}</h3>
-                  <p className="w3-text-grey">{post.date}</p>
-                  <p>{post.description}</p>
-                  <a href={post.link} className="w3-button w3-round-large w3-margin-top read-more-btn">
-                    Read More →
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="blog-filters" role="group" aria-label="Filter by source">
+          {sources.map((s) => {
+            const on = active.has(s);
+            return (
+              <button
+                key={s}
+                className={`chip ${on ? "chip-active" : ""}`}
+                type="button"
+                onClick={() => toggleSource(s)}
+                aria-pressed={on}
+              >
+                {s}
+              </button>
+            );
+          })}
+          {sources.length > 0 && (
+            <button
+              className="chip chip-reset"
+              type="button"
+              onClick={() => setActive(new Set())}
+              aria-label="Clear filters"
+            >
+              Reset
+            </button>
+          )}
         </div>
       </div>
-    </section>
+
+      {/* grid */}
+      {filtered.length === 0 ? (
+        <p className="muted">No posts found. Try a different search or filter.</p>
+      ) : (
+        <ul className="blog-grid">
+          {filtered.map((p) => {
+            const d = new Date(p.date);
+            const formatted = isNaN(d.getTime()) ? "" : DATE_FMT.format(d);
+
+            return (
+              <li key={p.id} className="blog-card card">
+                <div className="blog-card-body">
+                  <div className="blog-meta">
+                    <span className="chip chip-source">{p.source}</span>
+                    {formatted && <time dateTime={p.date}>{formatted}</time>}
+                  </div>
+
+                  <h3 className="blog-title">{p.title}</h3>
+
+                  {p.excerpt && <p className="blog-excerpt">{p.excerpt}</p>}
+
+                  <div className="blog-actions">
+                    <a
+                      href={p.link}
+                      className="w3-button btn-ghost w3-round-xlarge"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Read more: ${p.title}`}
+                    >
+                      Read more
+                    </a>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
   );
 }
