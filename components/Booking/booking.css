@@ -1,36 +1,447 @@
 /* components/Booking/booking.css */
-.badges{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+
+/* ---------- Card ---------- */
+.booking-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 28px 24px 32px;
+  margin: 24px 0 64px;
 }
 
-/* reset & readable */
-.badge.chip{
-  appearance:none;
-  -webkit-appearance:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  white-space:nowrap;
-  padding:8px 14px;
-  border-radius:999px;
-  border:1.5px solid var(--border);
-  background:var(--card);
-  color:var(--brand-ink) !important;
-  font-weight:800;
-  font-size:13px;
-  line-height:1;
-  cursor:pointer;
-  box-shadow:0 2px 0 rgba(0,0,0,.02);
+/* ---------- Grid ---------- */
+.booking-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 16px;
 }
 
-.badge.chip:hover{ border-color: var(--brand); }
+/* Span helpers (desktop) */
+.span-12 { grid-column: span 12; }
+.span-6  { grid-column: span 6;  }
+.span-5  { grid-column: span 5;  }
+.span-4  { grid-column: span 4;  }
+.span-3  { grid-column: span 3;  }
+.span-2  { grid-column: span 2;  }
 
-/* selected */
-.badge.chip.chip-active{
-  background: linear-gradient(135deg, var(--brand) 0%, #1adaea 100%) !important;
-  color:#fff !important;
-  border-color: transparent !important;
-  box-shadow:0 8px 18px rgba(13,168,224,.28);
+/* Mobile first: single column */
+@media (max-width: 900px) {
+  .booking-grid { grid-template-columns: 1fr; }
+  .span-12, .span-6, .span-5, .span-4, .span-3, .span-2 { grid-column: span 1; }
 }
+
+/* ---------- Field ---------- */
+.field label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 2px 2px 8px;
+  font-weight: 600;
+  letter-spacing: .2px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  background: var(--surface);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 14px;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.field textarea { resize: vertical; }
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--muted);
+  opacity: .66;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 25%, transparent);
+}
+
+/* ---------- Chips ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 8px 0 4px;
+}
+
+.chip {
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 14px;
+  transition: transform .08s ease, border-color .15s ease, background-color .15s ease;
+}
+
+.chip:hover { border-color: color-mix(in oklab, var(--brand) 45%, var(--border)); }
+.chip:active { transform: scale(.98); }
+
+.chip-active {
+  background: linear-gradient(135deg, var(--brand) 0%, #19d5ea 100%);
+  color: #fff;
+  border-color: color-mix(in oklab, var(--brand) 35%, #000);
+  box-shadow: 0 12px 22px color-mix(in oklab, var(--brand) 30%, transparent);
+}
+
+/* ---------- Button ---------- */
+.btn-primary {
+  background: linear-gradient(135deg, var(--brand) 0%, #19d5ea 100%);
+  color: #fff;
+  font-weight: 900;
+  border: 0;
+  border-radius: 16px;
+  padding: 14px 20px;
+  box-shadow: 0 16px 30px color-mix(in oklab, var(--brand) 35%, transparent);
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* ---------- Accessibility ---------- */
+.sr-only {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* -----------------------------
+   LIGHT-MODE TWEAKS (High contrast)
+   ----------------------------- */
+
+/* 1) Base chip in light mode: subtle fill + clearer border */
+:root .chip {
+  background: #f6fbff;                  /* soft sky fill */
+  border-color: #cfe2ef;                /* clearer border */
+}
+:root .chip:hover {
+  background: #e9f6ff;
+}
+:root .chip:active {
+  transform: scale(0.98);
+}
+:root .chip.chip-active {
+  /* keep the strong brand fill for the active state */
+  background: linear-gradient(135deg, var(--brand) 0%, #19d5ea 100%);
+  color: #fff;
+  border-color: color-mix(in oklab, var(--brand) 35%, #000);
+  box-shadow: 0 12px 22px color-mix(in oklab, var(--brand) 30%, transparent);
+}
+
+/* 2) Select: make the closed control look consistent + add a caret */
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* room for the caret */
+  padding-right: 38px;
+
+  /* svg caret that works both themes (strokes adapt via currentColor) */
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5' stroke='%23556' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 18px 18px;
+  color: var(--text);
+}
+
+/* Dark mode caret color */
+[data-theme="dark"] .field select {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5' stroke='%23d7e3ea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* 3) Stronger border hover/focus states for select specifically */
+.field select:hover {
+  border-color: color-mix(in oklab, var(--brand) 35%, var(--border));
+}
+.field select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 25%, transparent);
+}
+
+/* 4) Some browsers will honor option styles — this helps light mode menus
+   (it won't break where the UA ignores it) */
+.field select option {
+  color: #10212b;            /* dark ink for light mode options */
+  background: #ffffff;
+}
+[data-theme="dark"] .field select option {
+  color: #e8eef3;            /* light ink for dark mode options */
+  background: #141a1f;
+}
+
+/* 5) Slightly punchier placeholder contrast in light mode */
+:root .field input::placeholder,
+:root .field textarea::placeholder {
+  color: #6c7b86; /* instead of very muted */
+}
+
+/* ---------------------------
+   DATE/TIME — LIGHT-MODE TWEAKS
+   --------------------------- */
+
+/* Make the field text readable even before focus */
+:root .field input[type="date"],
+:root .field input[type="time"] {
+  color: var(--text);
+  background: #fff;
+}
+
+/* Subtle, brand-consistent focus instead of harsh glow */
+:root .field input[type="date"]:focus,
+:root .field input[type="time"]:focus,
+:root .field input:focus,
+:root .field select:focus {
+  outline: 0;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 22%, transparent);
+}
+
+/* Calendar/clock icons in light mode: medium contrast */
+:root .field input[type="date"]::-webkit-calendar-picker-indicator,
+:root .field input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: .8;
+  filter: invert(35%) sepia(8%) saturate(500%) hue-rotate(170deg) brightness(95%);
+}
+
+/* Tame the UA date/time text colors so 'dd'/'--:--' don't look disabled */
+:root .field input[type="date"]::-webkit-datetime-edit-text,
+:root .field input[type="date"]::-webkit-datetime-edit-year-field,
+:root .field input[type="date"]::-webkit-datetime-edit-month-field,
+:root .field input[type="date"]::-webkit-datetime-edit-day-field,
+:root .field input[type="time"]::-webkit-datetime-edit-text,
+:root .field input[type="time"]::-webkit-datetime-edit-hour-field,
+:root .field input[type="time"]::-webkit-datetime-edit-minute-field {
+  color: var(--muted);
+}
+:root .field input[type="date"]:focus::-webkit-datetime-edit-text,
+:root .field input[type="date"]:focus::-webkit-datetime-edit-year-field,
+:root .field input[type="date"]:focus::-webkit-datetime-edit-month-field,
+:root .field input[type="date"]:focus::-webkit-datetime-edit-day-field,
+:root .field input[type="time"]:focus::-webkit-datetime-edit-text,
+:root .field input[type="time"]:focus::-webkit-datetime-edit-hour-field,
+:root .field input[type="time"]:focus::-webkit-datetime-edit-minute-field {
+  color: var(--text);
+}
+
+/* Keep controls same height as text inputs */
+:root .field input[type="date"],
+:root .field input[type="time"] {
+  min-height: 56px; /* match your input height */
+}
+
+/* =========================================
+   SELECT "MODE" — kill default blue halo
+   ========================================= */
+
+/* Make the native arrow consistent and position it */
+:root .field select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2362788a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 14px;
+  padding-right: 40px; /* space for the arrow */
+}
+
+/* Remove the OS/UA blue focus ring and box-shadow completely */
+:root .field select:focus,
+:root .field select:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: var(--brand) !important;      /* subtle, brand border only */
+}
+
+/* Firefox sometimes still paints an inner dotted ring – suppress that */
+:root .field select:-moz-focusring {
+  outline: none !important;
+}
+
+/* Optional: add a very soft wrapper ring if you like */
+:root .field:has(select:focus) {
+  /* comment this block out if you want absolutely no ring at all */
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--brand) 18%, transparent);
+  border-radius: 14px; /* match your input radius */
+}
+
+
+/* ---------------------------
+   CHIPS — LIGHT-MODE TWEAKS
+   --------------------------- */
+
+:root .chip {
+  background: #f6fbff;      /* soft sky so it’s visible on white */
+  color: var(--brand-ink);   /* readable ink */
+  border: 1.5px solid #cfe2ef;
+  box-shadow: none;
+}
+:root .chip:hover {
+  background: #eef8ff;
+  border-color: #bcd7e9;
+}
+:root .chip:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 20%, transparent);
+}
+
+/* Active chip: strong but not neon */
+:root .chip.chip-active {
+  background: linear-gradient(135deg, var(--brand) 0%, #19d5ea 100%);
+  color: #fff;
+  border-color: var(--brand);
+  box-shadow: 0 12px 22px color-mix(in oklab, var(--brand) 24%, transparent);
+}
+
+/* If you render inactive chips with aria-pressed, ensure readable text */
+:root .chip[aria-pressed="false"] {
+  color: var(--brand-ink);
+  opacity: 1;
+}
+
+/* alternative active chip */
+:root .chip.chip-active {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+  box-shadow: 0 10px 18px rgba(13,168,224,.20);
+}
+
+/* =========================================
+   Kill the native blue focus halo (WebKit/Chromium/Firefox)
+   for Date, Time and Mode (select) in light mode
+   ========================================= */
+
+/* Base look */
+#book-form :is(select, input[type="date"], input[type="time"]) {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  box-shadow: none;                 /* kill UA glow */
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background-color: #fff;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+
+/* Custom, subtle focus (no blue ring) */
+#book-form :is(select, input[type="date"], input[type="time"]):focus,
+#book-form :is(select, input[type="date"], input[type="time"]):focus-visible {
+  outline: none !important;
+  box-shadow: none !important;      /* override UA */
+  border-color: var(--brand);       /* thin brand border only */
+}
+
+/* Firefox inner ring removal */
+#book-form :is(select, input[type="date"], input[type="time"])::-moz-focus-inner {
+  border: 0 !important;
+}
+#book-form select:-moz-focusring {
+  outline: none !important;
+}
+
+/* Make the select arrow consistent (and remove iOS tint) */
+#book-form select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2362788a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 14px;
+  padding-right: 40px;              /* room for arrow */
+}
+
+/* Safari/iOS – ensure no glow leaks in */
+@supports (-webkit-touch-callout: none) {
+  #book-form :is(select, input[type="date"], input[type="time"]) {
+    box-shadow: none !important;
+    outline: none !important;
+    background-clip: padding-box;
+  }
+}
+
+/* Optional: If you want a *very* soft outer ring on focus, uncomment:
+#book-form :is(select, input[type="date"], input[type="time"]):focus {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 18%, transparent);
+}
+*/
+
+/* --- Make Date / Time text readable in LIGHT mode and kill the cyan segment highlight --- */
+
+#book-form :is(input[type="date"], input[type="time"], select) {
+  color: var(--text);             /* readable text color */
+  caret-color: var(--text);
+  background-color: #fff;         /* ensure light bg */
+}
+
+/* WebKit/Chromium: force all inner pieces to use our color */
+#book-form input[type="date"]::-webkit-datetime-edit,
+#book-form input[type="time"]::-webkit-datetime-edit {
+  color: var(--text);
+}
+
+/* Each sub-field (month/day/year/hour/min/sec) uses our color */
+#book-form input[type="date"]::-webkit-datetime-edit-text,
+#book-form input[type="date"]::-webkit-datetime-edit-month-field,
+#book-form input[type="date"]::-webkit-datetime-edit-day-field,
+#book-form input[type="date"]::-webkit-datetime-edit-year-field,
+#book-form input[type="time"]::-webkit-datetime-edit-text,
+#book-form input[type="time"]::-webkit-datetime-edit-hour-field,
+#book-form input[type="time"]::-webkit-datetime-edit-minute-field,
+#book-form input[type="time"]::-webkit-datetime-edit-second-field {
+  color: var(--text);
+}
+
+/* Remove the cyan background when a sub-field is focused/active */
+#book-form input[type="date"]::-webkit-datetime-edit-month-field:focus,
+#book-form input[type="date"]::-webkit-datetime-edit-day-field:focus,
+#book-form input[type="date"]::-webkit-datetime-edit-year-field:focus,
+#book-form input[type="time"]::-webkit-datetime-edit-hour-field:focus,
+#book-form input[type="time"]::-webkit-datetime-edit-minute-field:focus,
+#book-form input[type="time"]::-webkit-datetime-edit-second-field:focus {
+  background: transparent;        /* kill aqua */
+  color: var(--text);
+}
+
+/* When the date/time is empty (invalid) use muted color for the “placeholder” look */
+#book-form :is(input[type="date"], input[type="time"]):not(:focus):invalid::-webkit-datetime-edit {
+  color: var(--muted);
+}
+
+/* Firefox: make sure the text color applies and no inner rings appear */
+#book-form :is(input[type="date"], input[type="time"])::-moz-focus-inner {
+  border: 0;
+}
+#book-form :is(input[type="date"], input[type="time"]) {
+  color: var(--text);
+}
+
+/* Optional – consistent padding inside the date/time fields */
+#book-form :is(input[type="date"], input[type="time"])::-webkit-datetime-edit {
+  padding: .625rem .75rem;
+}
+

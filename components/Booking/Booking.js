@@ -1,214 +1,204 @@
 // components/Booking/Booking.js
 "use client";
 
-import "./booking.css";
-import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
+import "./booking.css";
 
-const initial = (ref) => ({
-  name: "",
-  email: "",
-  phone: "",
-  company: "",
-  location: "",
-  headcount: "",
-  date: "",
-  time: "",
-  tastingMode: "On-site",
-  interests: ["Cafeteria Management"], // default selected
-  dietary: "",
-  notes: "",
-  source: ref || "",
-});
+const CHIP_OPTIONS = ["Cafeteria Management", "Smart Vending", "Daily Meal Plans"];
 
 export default function Booking() {
-  const ref = useSearchParams()?.get("ref") || "";
-  const [data, setData] = useState(initial(ref));
-  const [ok, setOk] = useState(false);
-  const [err, setErr] = useState("");
+  const search = useSearchParams();
+  const refTag = search?.get("ref") || "";
 
-  const set = (k, v) => setData((d) => ({ ...d, [k]: v }));
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    headcount: "",
+    date: "",
+    time: "",
+    mode: "On-site",
+    interests: [],
+    diet: "",
+    notes: "",
+  });
 
-  const toggleInterest = (label) =>
+  const toggleInterest = (label) => {
     setData((d) => {
-      const has = d.interests.includes(label);
+      const exists = d.interests.includes(label);
       return {
         ...d,
-        interests: has ? d.interests.filter((x) => x !== label) : [...d.interests, label],
+        interests: exists ? d.interests.filter((x) => x !== label) : [...d.interests, label],
       };
     });
-
-  const validate = () => {
-    if (!data.name.trim()) return "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return "Enter a valid email.";
-    if (!data.company.trim()) return "Enter your company.";
-    if (!data.location.trim()) return "Enter your office location.";
-    if (!data.headcount.trim()) return "Enter approximate employee headcount.";
-    if (!data.date) return "Pick a preferred date.";
-    return "";
   };
 
-  const submit = (e) => {
-    e.preventDefault();
-    const v = validate();
-    if (v) return setErr(v);
-    setErr("");
+  const update = (key) => (e) => setData((d) => ({ ...d, [key]: e.target.value }));
 
-    // Build prefilled email
-    const to = "sales@grubox.in";
-    const subject = `Tasting Request — ${data.company} (${data.name})`;
-    const body = [
-      "New Tasting Request",
-      "-------------------",
-      `Name: ${data.name}`,
-      `Email: ${data.email}`,
-      `Phone: ${data.phone || "-"}`,
-      `Company: ${data.company}`,
-      `Location: ${data.location}`,
-      `Headcount: ${data.headcount}`,
-      `Preferred: ${data.date}${data.time ? " " + data.time : ""} (${data.tastingMode})`,
-      `Interests: ${data.interests.join(", ") || "-"}`,
-      `Dietary: ${data.dietary || "-"}`,
-      `Notes: ${data.notes || "-"}`,
-      `Source: ${data.source || "-"}`,
-    ].join("\n");
+  const waMessage = useMemo(() => {
+    const parts = [
+      `*Book a Tasting*`,
+      data.name && `Name: ${data.name}`,
+      data.email && `Email: ${data.email}`,
+      data.phone && `Phone: ${data.phone}`,
+      data.company && `Company: ${data.company}`,
+      data.headcount && `Headcount: ${data.headcount}`,
+      (data.date || data.time) && `Preferred: ${data.date || ""} ${data.time || ""}`.trim(),
+      `Mode: ${data.mode}`,
+      data.interests.length ? `Interests: ${data.interests.join(", ")}` : "",
+      data.diet && `Dietary: ${data.diet}`,
+      data.notes && `Notes: ${data.notes}`,
+      refTag && `Ref: ${refTag}`,
+    ]
+      .filter(Boolean)
+      .join("\n");
 
-    window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setOk(true);
-  };
+    return encodeURIComponent(parts);
+  }, [data, refTag]);
 
-  if (ok) {
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
-      "sales@grubox.in"
-    )}&su=${encodeURIComponent(`Tasting Request — ${data.company || "Company"} (${data.name || "Name"})`)}&body=${encodeURIComponent(
-      "Hi Grubox team,\n\nI'd like to book a tasting.\n\n— Sent from the Grubox website"
-    )}`;
-
-    return (
-      <section className="tasting-hero w3-container tasting-page">
-        <div className="w3-content" style={{ maxWidth: 900 }}>
-          <div className="tasting-card w3-padding-large">
-            <h2 className="w3-margin-top">Thanks! 🎉</h2>
-            <p className="w3-large">We opened your email app with a prefilled message. Just hit send!</p>
-            <div className="w3-margin-top">
-              <a className="w3-button btn-primary w3-round-xlarge w3-margin-right" href={gmailUrl} target="_blank" rel="noopener noreferrer">
-                Use Gmail instead
-              </a>
-              <Link href="/corporate-services" className="w3-button btn-ghost w3-round-xlarge">
-                Explore Corporate Plans
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const sendWhatsApp = useCallback(() => {
+    // Put your target number here (with country code, no + or spaces)
+    const SALES_NUMBER = "919999999999";
+    const url = `https://wa.me/${SALES_NUMBER}?text=${waMessage}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }, [waMessage]);
 
   return (
-    <>
-      {/* HERO */}
-      <section className="tasting-hero w3-container tasting-page">
-        <div className="w3-content" style={{ maxWidth: 900 }}>
-          <h1 className="section-title">Book a Tasting</h1>
-          <p className="section-subtitle">
-            10–15 minute tasting for your team. Tell us your preferences and a convenient time—we’ll handle the rest.
-          </p>
+    <section className="booking-card">
+      <h2 className="sr-only">Tasting form</h2>
+
+      <form
+        className="booking-grid"
+        onSubmit={(e) => {
+          e.preventDefault();
+          sendWhatsApp();
+        }}
+      >
+        {/* Row 1 */}
+        <div className="field span-6">
+          <label htmlFor="name">Your name *</label>
+          <input
+            id="name"
+            required
+            value={data.name}
+            onChange={update("name")}
+            placeholder="Jane Doe"
+          />
         </div>
-      </section>
 
-      {/* FORM */}
-      <section className="w3-container tasting-page" style={{ paddingBottom: 64 }}>
-        <div className="w3-content" style={{ maxWidth: 900 }}>
-          <form onSubmit={submit} className="tasting-card w3-padding-large">
-            <div className="form-grid">
-              <Field id="name" label="Full Name *" value={data.name} onChange={(v) => set("name", v)} />
-              <Field id="email" type="email" label="Work Email *" value={data.email} onChange={(v) => set("email", v)} />
-              <Field id="phone" label="Phone" helper="Optional. Helps us coordinate quickly." value={data.phone} onChange={(v) => set("phone", v)} />
-              <Field id="company" label="Company *" value={data.company} onChange={(v) => set("company", v)} />
-              <Field id="location" label="Office Location (City/Area) *" value={data.location} onChange={(v) => set("location", v)} />
-              <Field id="headcount" label="Approx. Headcount *" placeholder="e.g., 120" value={data.headcount} onChange={(v) => set("headcount", v)} />
-            </div>
-
-            <div className="form-grid-3 w3-margin-top">
-              <Field id="date" type="date" label="Preferred Date *" value={data.date} onChange={(v) => set("date", v)} />
-              <Field id="time" type="time" label="Preferred Time" value={data.time} onChange={(v) => set("time", v)} />
-              <div className="field">
-                <label htmlFor="mode">Mode</label>
-                <select id="mode" className="select" value={data.tastingMode} onChange={(e) => set("tastingMode", e.target.value)}>
-                  <option>On-site</option>
-                  <option>Virtual</option>
-                </select>
-              </div>
-            </div>
-
-            {/* INTEREST CHIPS — your requested block (full) */}
-            <div className="w3-margin-top">
-              <label style={{ fontWeight: 800, display: "block", marginBottom: 8, color: "var(--brand-ink)" }}>I’m interested in</label>
-              <div className="badges">
-                {["Cafeteria Management", "Smart Vending", "Daily Meal Plans"].map((label) => {
-                  const active = data.interests.includes(label);
-                  return (
-                    <button
-                      key={label}
-                      type="button"
-                      onClick={() => toggleInterest(label)}
-                      className={`badge chip ${active ? "chip-active" : ""}`}
-                      aria-pressed={active}
-                    >
-                      {label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="form-grid w3-margin-top">
-              <Field
-                id="dietary"
-                label="Dietary Preferences"
-                placeholder="Veg / Non-veg / Jain / Allergies"
-                value={data.dietary}
-                onChange={(v) => set("dietary", v)}
-              />
-              <div className="field" style={{ gridColumn: "1 / -1" }}>
-                <label htmlFor="notes">Anything else?</label>
-                <textarea
-                  id="notes"
-                  className="textarea"
-                  placeholder="Any special requirements or questions"
-                  value={data.notes}
-                  onChange={(e) => set("notes", e.target.value)}
-                />
-              </div>
-            </div>
-
-            {err && <div className="error w3-margin-top">{err}</div>}
-
-            <div className="w3-margin-top">
-              <button className="w3-button btn-primary w3-round-xlarge">Request Tasting (opens email)</button>
-              <Link href="/corporate-services" className="w3-button btn-ghost w3-round-xlarge w3-margin-left">
-                Explore Corporate Plans
-              </Link>
-            </div>
-          </form>
+        <div className="field span-6">
+          <label htmlFor="email">Work email *</label>
+          <input
+            id="email"
+            type="email"
+            required
+            value={data.email}
+            onChange={update("email")}
+            placeholder="name@company.com"
+          />
         </div>
-      </section>
-    </>
-  );
-}
 
-/* ------- small input helper ------- */
-function Field({ id, label, value, onChange, helper, type = "text", placeholder }) {
-  return (
-    <div className="field">
-      <label htmlFor={id}>{label}</label>
-      {type === "textarea" ? (
-        <textarea id={id} className="textarea" value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
-      ) : (
-        <input id={id} type={type} className="input" value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
-      )}
-      {helper && <div className="helper">{helper}</div>}
-    </div>
+        {/* Row 2 */}
+        <div className="field span-6">
+          <label htmlFor="phone">Phone</label>
+          <input
+            id="phone"
+            value={data.phone}
+            onChange={update("phone")}
+            placeholder="+91 98765 43210"
+          />
+        </div>
+
+        <div className="field span-6">
+          <label htmlFor="company">Company *</label>
+          <input
+            id="company"
+            required
+            value={data.company}
+            onChange={update("company")}
+            placeholder="Acme Pvt Ltd"
+          />
+        </div>
+
+        {/* Row 3 */}
+        <div className="field span-5">
+          <label htmlFor="headcount">Approx. headcount</label>
+          <input
+            id="headcount"
+            value={data.headcount}
+            onChange={update("headcount")}
+            placeholder="e.g., 120"
+          />
+        </div>
+
+        <div className="field span-3">
+          <label htmlFor="date">Date</label>
+          <input id="date" type="date" value={data.date} onChange={update("date")} />
+        </div>
+
+        <div className="field span-2">
+          <label htmlFor="time">Time</label>
+          <input id="time" type="time" value={data.time} onChange={update("time")} />
+        </div>
+
+        <div className="field span-2">
+          <label htmlFor="mode">Mode</label>
+          <select id="mode" value={data.mode} onChange={update("mode")}>
+            <option>On-site</option>
+            <option>Virtual</option>
+            <option>Hybrid</option>
+          </select>
+        </div>
+
+        {/* Row 4 – chips */}
+        <div className="span-12 chips">
+          {CHIP_OPTIONS.map((label) => {
+            const active = data.interests.includes(label);
+            return (
+              <button
+                key={label}
+                type="button"
+                className={`chip ${active ? "chip-active" : ""}`}
+                onClick={() => toggleInterest(label)}
+                aria-pressed={active}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Row 5 */}
+        <div className="field span-6">
+          <label htmlFor="diet">Dietary preferences (Veg / Non-veg / Jain / Allergies)</label>
+          <input
+            id="diet"
+            value={data.diet}
+            onChange={update("diet")}
+            placeholder="Veg only, peanut allergy"
+          />
+        </div>
+
+        <div className="field span-6">
+          <label htmlFor="notes">Anything else?</label>
+          <textarea
+            id="notes"
+            rows={5}
+            value={data.notes}
+            onChange={update("notes")}
+            placeholder="Parking, security, vendor pass, etc."
+          />
+        </div>
+
+        {/* CTA row */}
+        <div className="span-12 actions">
+          <button type="submit" className="btn-primary">
+            Send via WhatsApp
+          </button>
+        </div>
+      </form>
+    </section>
   );
 }

@@ -1,6 +1,6 @@
 /* components/blog/blog.css */
 
-/* toolbar */
+/* ========== Toolbar ========== */
 .blog-toolbar{
   display:flex;
   gap:12px;
@@ -8,6 +8,7 @@
   flex-wrap:wrap;
   margin: 8px 0 18px;
 }
+
 .blog-search{
   flex:1 1 260px;
   min-width:220px;
@@ -18,11 +19,17 @@
   border-radius:12px;
   outline:none;
 }
-.blog-search:focus{ box-shadow:0 0 0 3px rgba(13,168,224,.18); }
+.blog-search:focus{
+  box-shadow:0 0 0 3px rgba(13,168,224,.18);
+}
 
-.blog-filters{ display:flex; gap:8px; flex-wrap:wrap; }
+.blog-filters{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
 
-/* chips — high contrast in light mode, readable in dark too */
+/* ========== Chips ========== */
 .chip{
   font-weight:700;
   font-size:.9rem;
@@ -35,23 +42,29 @@
 }
 .chip-active{
   background: linear-gradient(135deg, var(--brand, #0da8e0) 0%, #1adaea 100%);
-  color:#fff; border-color:transparent;
+  color:#fff;
+  border-color:transparent;
   box-shadow:0 6px 18px rgba(13,168,224,.25);
 }
 .chip-reset{ opacity:.9; }
 
-/* grid */
+/* ========== Grid ========== */
 .blog-grid{
   list-style:none;
-  padding:0; margin:0;
+  padding:0;
+  margin:0;
   display:grid;
   gap:18px;
   grid-template-columns: 1fr;
 }
-@media (min-width:700px){ .blog-grid{ grid-template-columns: repeat(2, 1fr); } }
-@media (min-width:1100px){ .blog-grid{ grid-template-columns: repeat(3, 1fr); } }
+@media (min-width:700px){
+  .blog-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width:1100px){
+  .blog-grid{ grid-template-columns: repeat(3, 1fr); }
+}
 
-/* cards */
+/* ========== Cards ========== */
 .blog-card{
   display:flex;
   flex-direction:column;
@@ -64,7 +77,7 @@
   color:var(--text, #0e2433);
 }
 
-/* meta + source pill */
+/* ========== Meta + source pill ========== */
 .blog-meta{
   display:flex;
   align-items:center;
@@ -81,32 +94,52 @@
   padding:4px 10px;
 }
 
-/* title + excerpt */
+/* ========== Title ========== */
 .blog-title{
   margin:6px 0 8px;
   font-weight:900;
   color:var(--brand-ink, #086e90);
 }
 
-/* show one paragraph max; clamp to keep card heights steady */
+/* ========== Excerpt (safe multi-browser clamp) ========== */
+/* Fallback for all browsers */
 .blog-excerpt{
+  --lines: 4;        /* number of lines */
+  --lh: 1.6;         /* line height used below */
   margin-top:8px;
-  line-height:1.6;
-  display:-webkit-box;
-  -webkit-line-clamp:4;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  max-height: calc(1.6em * 4);
+  line-height: var(--lh);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-height: calc(var(--lines) * 1em * var(--lh));
 }
 
-/* keep CTA at bottom */
+/* Standard property when supported */
+@supports (line-clamp: 1) {
+  .blog-excerpt{
+    max-height: none;
+    display: block;
+    line-clamp: 4;
+  }
+}
+
+/* WebKit legacy implementation */
+@supports (-webkit-line-clamp: 1) {
+  .blog-excerpt{
+    max-height: none;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  
+  }
+}
+
+/* ========== CTA alignment ========== */
 .blog-actions{
   margin-top:auto;
   padding-top:12px;
 }
 
-/* local fallback for btn-ghost if not defined globally */
+/* ========== Local btn-ghost (if not global) ========== */
 .btn-ghost{
   border:1.5px solid var(--border, #d7dee6) !important;
   background:transparent !important;
@@ -115,7 +148,7 @@
   border-radius:999px;
 }
 
-/* optional: stabilize height on large grids */
+/* Optional: stabilize card height on large grids */
 @media (min-width:900px){
   .blog-card.card{ min-height: 360px; }
 }
