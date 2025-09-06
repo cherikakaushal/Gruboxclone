@@ -1,12 +1,6 @@
-// app/meal/page.js
-import React from 'react';
-import MealPlans from '@/components/meal/MealPlans';
+import MealPlans from "../../components/meal/MealPlans";
+import "../../components/meal/meal.css";
 
-export default function MealPage() {
-  return (
-    <div className="w3-light-grey">
-      <MealPlans />
-    </div>
-  );
+export default function Page() {
+  return <MealPlans theme="light" />; // or "dark"
 }
-
