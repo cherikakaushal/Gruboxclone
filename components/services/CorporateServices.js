@@ -1,139 +1,171 @@
-import React from "react";
+// components/services/CorporateServices.js
+"use client";
 
-export default function CorporateServices() {
+// Single-section Corporate Services page (theme-aware)
+// Images expected in /public/assets/corporate/ :
+//  - hero-office-cafe.jpg   (16:9)
+//  - img-vending.jpg        (4:3)
+//  - img-ops-dash.jpg       (4:3)
+//  - img-cafe-team.jpg      (optional, 4:3)
+//  - press-strip.png        (wide strip, optional)
+
+export default function CorporateServices({ theme = "dark" }) {
   return (
-    <div className="w3-light-grey">
+    <section className={`corp theme-${theme}`}>
+      <div className="co-wrap">
 
-      {/* Hero Section */}
-      <section className="w3-container w3-padding-64 w3-white w3-center">
-        <div className="w3-content" style={{ maxWidth: "900px" }}>
-          <h1 className="w3-jumbo w3-bold" style={{ color: "#333" }}>
-            🚀 Your one‑stop solution for <span style={{ color: "#ffb347" }}>corporate F&B</span> needs.
-          </h1>
-          <p className="w3-xlarge w3-text-grey w3-opacity">
-            From smart vending machines to full-scale cafeteria setups — Grubox delivers future-ready dining.
-          </p>
-        </div>
-      </section>
+        {/* HERO ROW */}
+        <div className="co-hero">
+          <div className="co-hero-copy">
+            <h1 className="co-title">
+              <span className="co-grad">Corporate Services</span> for modern offices
+            </h1>
+            <p className="co-sub">
+              Cafeteria management, daily meal plans and smart vending—delivered with
+              SLAs, analytics and proven playbooks.
+            </p>
 
-      {/* Service Cards */}
-      <section className="w3-container w3-padding-64 w3-white">
-        <div className="w3-content" style={{ maxWidth: "1100px" }}>
-          <div className="w3-row-padding w3-margin-top w3-center">
-            {[
-              {
-                emoji: "🍽️",
-                title: "Corporate Meals",
-                desc: "Fresh, delicious meals served daily at your office. Nutrition meets flavor.",
-              },
-              {
-                emoji: "🛒",
-                title: "Digital Tuck Shop",
-                desc: "Smart snack stations at your fingertips. Curated, cashless, convenient.",
-              },
-              {
-                emoji: "📦",
-                title: "Office Deliveries",
-                desc: "Premium snacks & meals delivered for events, meetings or daily hunger.",
-              },
-            ].map((service, i) => (
-              <div key={i} className="w3-third w3-padding">
-                <div
-                  className="w3-card-4 w3-round-large w3-white w3-hover-shadow"
-                  style={{
-                    padding: "40px",
-                    border: "1px solid #eee",
-                    transition: "0.3s",
-                    background: "#fff",
-                    boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
-                  }}
-                >
-                  <div className="w3-jumbo">{service.emoji}</div>
-                  <h3 className="w3-large w3-bold w3-margin-top">{service.title}</h3>
-                  <p className="w3-text-grey">{service.desc}</p>
-                </div>
-              </div>
-            ))}
+            <div className="co-cta-row">
+              <a className="co-btn co-btn-primary" href="/book-a-tasting">
+                Book a Discovery Call
+              </a>
+
+              {/* Updated: open the mini web deck instead of a PDF */}
+              <a className="co-btn co-btn-ghost" href="/deck">
+                View Quick Deck
+              </a>
+            </div>
+
+            <ul className="co-chips">
+              <li>SLAs &amp; uptime</li>
+              <li>Hygiene audits</li>
+              <li>Cashless &amp; wallet</li>
+              <li>CSAT dashboards</li>
+            </ul>
+          </div>
+
+          {/* Main banner image (minimal imagery) */}
+          <div className="co-hero-art">
+            <img
+              className="co-hero-img"
+              src="/assets/corporate/hero-office-cafe.jpg"
+              alt="Modern office cafeteria with efficient service"
+              loading="eager"
+            />
           </div>
         </div>
-      </section>
 
-      {/* Grubox Cafeteria Platform */}
-      <section className="w3-container w3-padding-64" style={{ background: "#fff8e1" }}>
-        <div className="w3-content w3-center" style={{ maxWidth: "900px" }}>
-          <h2 className="w3-xxlarge w3-bold" style={{ color: "#333" }}>
-            ⚙️ Grubox Cafeteria Platform
-          </h2>
-          <p className="w3-large w3-text-grey w3-padding-16">
-            Manage meals, control access, and monitor reports — all through one powerful system.
-          </p>
-          <button className="w3-button w3-round-large w3-large" style={{ background: "#ffd75c", color: "#333" }}>
-            Contact Us to Get Started
-          </button>
+        {/* SERVICE PILLARS */}
+        <div className="co-pillars">
+          <article className="pillar">
+            <div className="p-icn" aria-hidden>
+              <svg viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="14" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="2"/>
+                <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+            </div>
+            <h3>Cafeteria Management</h3>
+            <p>End-to-end ops, menu engineering, vendor onboarding and cost controls.</p>
+          </article>
+
+          <article className="pillar">
+            <div className="p-icn" aria-hidden>
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="7" r="3" fill="none" stroke="currentColor" strokeWidth="2"/>
+                <path d="M6 21a6 6 0 0 1 12 0" fill="none" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+            </div>
+            <h3>Daily Meal Plans</h3>
+            <p>Subscriptions with predictable billing, feedback loops and retention.</p>
+          </article>
+
+          <article className="pillar">
+            <div className="p-icn" aria-hidden>
+              <svg viewBox="0 0 24 24">
+                <rect x="5" y="3" width="14" height="18" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="2"/>
+                <circle cx="12" cy="18" r="1" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3>Smart Vending</h3>
+            <p>Unmanned kiosks for hybrid floors; 24/7 availability with auto-refill.</p>
+          </article>
         </div>
-      </section>
 
-      {/* Trusted Clients */}
-      <section className="w3-container w3-padding-64 w3-white w3-center">
-        <div className="w3-content" style={{ maxWidth: "1000px" }}>
-          <h3 className="w3-xxlarge w3-bold">Trusted by Leading Corporates</h3>
-          <div className="w3-row-padding w3-padding-32">
-            {[
-              "AmericanExpress",
-              "KPMG",
-              "SunLife",
-              "Aon",
-              "Clifford",
-              "Honda",
-              "Panasonic",
-              "CushmanWakefield",
-            ].map((client, idx) => (
-              <div key={idx} className="w3-col l3 m4 s6 w3-padding-16">
-                <img
-                  src={`/assets/clients/${client}.png`}
-                  alt={client}
-                  className="w3-image"
-                  style={{ maxWidth: "120px" }}
-                />
-              </div>
-            ))}
+        {/* KPIs */}
+        <div className="co-kpis">
+          <div className="k"><strong>97–99%</strong><span>Lunch peak SLA</span></div>
+          <div className="k"><strong>30–60 days</strong><span>Go-live timeline</span></div>
+          <div className="k"><strong>4.6/5</strong><span>CSAT score</span></div>
+          <div className="k"><strong>~40%</strong><span>60-day repeat</span></div>
+        </div>
+
+        {/* VISUAL PANELS (2–3 simple images) */}
+        <div className="co-panels">
+          <figure className="panel">
+            <img className="panel-img" src="/assets/corporate/img-vending.jpg" alt="Smart vending in office lobby" loading="lazy"/>
+            <figcaption>Self-learning vending: auto-refill, uptime alerts, cashless.</figcaption>
+          </figure>
+
+          <figure className="panel">
+            <img className="panel-img" src="/assets/corporate/img-ops-dash.jpg" alt="Operations and CSAT dashboards" loading="lazy"/>
+            <figcaption>Dashboards: CSAT, SKUs, feedback loops and spend.</figcaption>
+          </figure>
+
+          <figure className="panel optional">
+            <img className="panel-img" src="/assets/corporate/img-cafe-team.jpg" alt="Team running cafeteria with SOPs" loading="lazy"/>
+            <figcaption>Launch playbooks &amp; SOPs for consistent quality.</figcaption>
+          </figure>
+        </div>
+
+        {/* PROOF / QUOTES */}
+        <div className="co-proof">
+          <div className="co-quotes">
+            <blockquote>
+              “Grubox improved our cafeteria experience and reduced queues within weeks.”
+              <cite>— Office Admin, NCR</cite>
+            </blockquote>
+            <blockquote>
+              “The vending rollout was seamless and the analytics are genuinely useful.”
+              <cite>— HR, Bengaluru</cite>
+            </blockquote>
+          </div>
+          <div className="co-press">
+            <img src="/assets/corporate/press-strip.png" alt="Press mentions" loading="lazy"/>
           </div>
         </div>
-      </section>
 
-      {/* Inquiry Form */}
-      <section className="w3-container w3-padding-64" style={{ background: "#fafafa" }}>
-        <div className="w3-content" style={{ maxWidth: "600px" }}>
-          <h3 className="w3-xlarge w3-bold w3-text-black">📩 Get in Touch with Us</h3>
-          <form className="w3-margin-top">
-            <input
-              className="w3-input w3-round-large w3-margin-bottom"
-              type="text"
-              placeholder="Your Name"
-              style={{ border: "1px solid #ddd" }}
-            />
-            <input
-              className="w3-input w3-round-large w3-margin-bottom"
-              type="email"
-              placeholder="Your Email"
-              style={{ border: "1px solid #ddd" }}
-            />
-            <textarea
-              className="w3-input w3-round-large w3-margin-bottom"
-              rows="4"
-              placeholder="Your Requirement"
-              style={{ border: "1px solid #ddd" }}
-            />
-           <button
-  className="w3-button w3-round-large w3-large"
-  style={{ background: "#ffd75c", color: "#333" }}
->
-  Contact Us to Get Started
-</button>
-
-          </form>
+        {/* MICRO FAQ */}
+        <div className="co-faq">
+          <details>
+            <summary>How do you price?</summary>
+            <p>
+              Based on model mix (cafeteria, meal plans, vending), site volume and SLAs.
+              We share a clear proposal after a discovery call.
+            </p>
+          </details>
+          <details>
+            <summary>Can we customize menus?</summary>
+            <p>Yes—within a tested framework to maintain quality and cost control.</p>
+          </details>
+          <details>
+            <summary>What’s the go-live timeline?</summary>
+            <p>Typically 30–60 days, subject to site readiness and licensing.</p>
+          </details>
         </div>
-      </section>
-    </div>
+
+        {/* FINAL CTA */}
+        <div className="co-final">
+          <div>
+            <h2 className="sec-title">Ready to upgrade your office food experience?</h2>
+            <p className="sec-sub">We’ll share menu options, pricing and a go-live plan for your sites.</p>
+          </div>
+          <a className="co-btn co-btn-primary" href="/book-a-tasting">Book a Discovery Call</a>
+        </div>
+
+      </div>
+
+      {/* background bloom */}
+      <div className="co-bg-glow" aria-hidden />
+    </section>
   );
 }

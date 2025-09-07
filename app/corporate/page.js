@@ -1,16 +1,9 @@
-import React from 'react';
-import CorporateServices from '@/components/services/CorporateServices';
+// app/corporate/page.js
+import CorporateServices from "../../components/services/CorporateServices";
+import "../../components/services/corporate.css";
 
-export const metadata = {
-  title: 'Corporate Services | Grubox',
-  description: 'Explore our tailored corporate food and vending services for modern offices across NCR.',
-};
+export default function Page() {
+  // switch "light" / "dark" to preview themes
+ return <CorporateServices theme="light" />; // or "dark"
 
-export default function CorporatePage() {
-  return (
-    <div className="w3-light-grey">
-      <CorporateServices />
-    </div>
-  );
 }
-
