@@ -1,28 +1,10 @@
 // app/layout.js
 import "./globals.css";
-// app/layout.js (add below your globals.css)
-import "./about/about.css";
-import "../components/About/about.css";
-// app/layout.js
-import "./book-a-tasting/book.css";
-
-import Navbar from "../components/navbar/navbar"; // client component ("use client" inside)
+import Navbar from "../components/navbar/navbar"; // keep if you have it
 
 export const metadata = {
-  title: "Grubox | Healthy Office Meals in Gurgaon, Noida & Delhi",
-  description:
-    "Order fresh, nutritious Indian meals delivered daily to your office. Grubox offers meal plans, subscriptions, and corporate food delivery across NCR.",
-  metadataBase: new URL("https://services.grubox.in"),
-  alternates: { canonical: "https://services.grubox.in" },
-  robots: "index, follow",
-  openGraph: {
-    title: "Grubox | Healthy Office Meals",
-    description:
-      "Fresh thalis and Indian meals delivered to offices in Delhi NCR",
-    url: "https://services.grubox.in",
-    siteName: "Grubox",
-    type: "website",
-  },
+  title: "Grubox — Healthy meals & smart cafeterias",
+  description: "Fresh, homely meals and on-demand cafeterias for offices.",
 };
 
 export default function RootLayout({ children }) {
@@ -42,19 +24,16 @@ export default function RootLayout({ children }) {
         <meta name="msapplication-TileColor" content="#2b5797" />
         <link rel="shortcut icon" href="/favicon.ico" />
 
-        {/* W3.CSS */}
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
-
         {/* Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Quicksand&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="w3-light-grey">
-        <Navbar />
+      <body>
+        {typeof Navbar === "function" ? <Navbar /> : null}
         <main>{children}</main>
       </body>
     </html>
