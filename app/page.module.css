@@ -269,6 +269,8 @@
   align-items: center;
 }
 .appLeft .sub { max-width: 52ch; }
+
+/* BADGE ROW (updated for PNGs) */
 .badges {
   display: flex;
   align-items: center;
@@ -276,14 +278,33 @@
   flex-wrap: wrap;
   margin-top: 10px;
 }
+
 .badge {
   display: inline-flex;
   align-items: center;
   border-radius: 12px;
   overflow: hidden;
   transition: transform .12s ease;
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 4px 8px;
 }
 .badge:hover { transform: translateY(-1px); }
+
+/* <-- This line makes the PNG/SVG badges render perfectly */
+.badge img,
+.badge svg {
+  display: block;
+  height: 52px;     /* consistent on-page height */
+  width: auto;      /* keep aspect ratio (≈3.2:1) */
+}
+
+/* Slightly smaller on very small screens */
+@media (max-width: 420px) {
+  .badge img,
+  .badge svg { height: 46px; }
+}
+
 .appMockWrap {
   background:
     radial-gradient(300px 200px at 20% 20%, rgba(20,184,166,.15), transparent 60%),

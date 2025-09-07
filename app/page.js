@@ -118,32 +118,32 @@ export default function HomePage() {
         <h2 className={styles.h2}>Why people choose Grubox</h2>
         <div className={styles.featureGrid}>
           <div className={styles.featureCard}>
-            <span className={styles.featureIcon} aria-hidden>🧑‍🍳</span>
+            <span className={styles.featureIcon} aria-hidden="true">🧑‍🍳</span>
             <h3>Homely & fresh</h3>
             <p>Cooked daily by verified partner kitchens with strict hygiene checks.</p>
           </div>
           <div className={styles.featureCard}>
-            <span className={styles.featureIcon} aria-hidden>⏱️</span>
+            <span className={styles.featureIcon} aria-hidden="true">⏱️</span>
             <h3>On-time delivery</h3>
             <p>Reliable dispatch & live tracking so lunch never misses your calendar.</p>
           </div>
           <div className={styles.featureCard}>
-            <span className={styles.featureIcon} aria-hidden>🥗</span>
+            <span className={styles.featureIcon} aria-hidden="true">🥗</span>
             <h3>Balanced menus</h3>
             <p>Veg/non-veg, calorie-smart options, and rotating weekly variety.</p>
           </div>
           <div className={styles.featureCard}>
-            <span className={styles.featureIcon} aria-hidden>📲</span>
+            <span className={styles.featureIcon} aria-hidden="true">📲</span>
             <h3>Smart app</h3>
             <p>Schedule meals, repeat favorites, apply coupons—two taps.</p>
           </div>
           <div className={styles.featureCard}>
-            <span className={styles.featureIcon} aria-hidden>🧾</span>
+            <span className={styles.featureIcon} aria-hidden="true">🧾</span>
             <h3>Transparent billing</h3>
             <p>No surprises. GST invoices & wallet support built-in.</p>
           </div>
           <div className={styles.featureCard}>
-            <span className={styles.featureIcon} aria-hidden>🛡️</span>
+            <span className={styles.featureIcon} aria-hidden="true">🛡️</span>
             <h3>ISO-driven ops</h3>
             <p>Process-first operations with ISO 9001 & 14001 best practices.</p>
           </div>
@@ -198,7 +198,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== APP SECTION ===== */}
+      {/* ===== APP SECTION (badges use PNG <img>) ===== */}
       <section className={`${styles.section} ${styles.appSection}`}>
         <div className={styles.appLeft}>
           <h2 className={styles.h2}>Get the Grubox app — order on the go</h2>
@@ -213,12 +213,11 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className={styles.badge}
             >
-              <Image
-                src="/assets/badges/google-play.svg"
+              <img
+                src="/assets/badges/google-play.png"
                 alt="Get it on Google Play"
-                width={170}
-                height={52}
-                fetchPriority="low"
+                loading="lazy"
+                decoding="async"
               />
             </a>
 
@@ -228,12 +227,11 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className={styles.badge}
             >
-              <Image
-                src="/assets/badges/app-store.svg"
+              <img
+                src="/assets/badges/app-store.png"
                 alt="Download on the App Store"
-                width={160}
-                height={52}
-                fetchPriority="low"
+                loading="lazy"
+                decoding="async"
               />
             </a>
           </div>
