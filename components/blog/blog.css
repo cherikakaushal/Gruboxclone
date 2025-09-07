@@ -6,13 +6,13 @@
   gap:12px;
   align-items:center;
   flex-wrap:wrap;
-  margin: 8px 0 18px;
+  margin: 12px 0 24px;             /* ↑ more breathing room */
 }
 
 .blog-search{
-  flex:1 1 260px;
-  min-width:220px;
-  padding:10px 14px;
+  flex:1 1 320px;                   /* ↑ wider default */
+  min-width:240px;                  /* ↑ safer min */
+  padding:12px 14px;                /* ↑ touch target */
   border:1.5px solid var(--border, #d7dee6);
   background:var(--card, #fff);
   color:var(--text, #0e2433);
@@ -39,7 +39,9 @@
   background:var(--card, #ffffff);
   color:var(--text, #0e2433);
   user-select:none;
+  transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
 }
+.chip:hover{ transform: translateY(-1px); }
 .chip-active{
   background: linear-gradient(135deg, var(--brand, #0da8e0) 0%, #1adaea 100%);
   color:#fff;
@@ -54,7 +56,7 @@
   padding:0;
   margin:0;
   display:grid;
-  gap:18px;
+  gap:24px;                          /* ↑ consistent gap */
   grid-template-columns: 1fr;
 }
 @media (min-width:700px){
@@ -69,12 +71,40 @@
   display:flex;
   flex-direction:column;
 }
+
+/* Optional cover image normalization if you have a media block on top */
+.blog-card .cover, 
+.blog-card figure,
+.blog-card .media{
+  margin:0;
+  overflow:hidden;
+  border-radius:16px;                 /* rounded top media */
+}
+.blog-card .cover img,
+.blog-card figure img,
+.blog-card .media img{
+  width:100%;
+  height:auto;
+  display:block;
+  object-fit:cover;
+}
+
+/* Inner body with proper padding + visual separation */
 .blog-card-body{
   display:flex;
   flex-direction:column;
   height:100%;
   background:var(--card, #fff);
   color:var(--text, #0e2433);
+  border:1px solid var(--border, #e3e9ef);
+  border-radius:16px;                 /* matches cover radius */
+  padding:16px;                       /* ← main fix: padding */
+  gap:8px;                            /* consistent inner spacing */
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.blog-card:hover .blog-card-body{
+  box-shadow:0 8px 26px rgba(13,168,224,.12);
+  transform: translateY(-2px);
 }
 
 /* ========== Meta + source pill ========== */
@@ -83,7 +113,9 @@
   align-items:center;
   gap:10px;
   color:var(--muted, #425466);
-  margin-bottom:8px;
+  margin-bottom:6px;                  /* slightly tighter */
+  font-size:.92rem;
+  line-height:1.4;
 }
 .chip-source{
   background:var(--accent, #ffd75c);
@@ -96,17 +128,21 @@
 
 /* ========== Title ========== */
 .blog-title{
-  margin:6px 0 8px;
+  margin:6px 0 4px;                   /* tighter with better rhythm */
   font-weight:900;
   color:var(--brand-ink, #086e90);
+  line-height:1.25;
+  font-size:1.15rem;
+}
+@media (min-width:900px){
+  .blog-title{ font-size:1.2rem; }
 }
 
 /* ========== Excerpt (safe multi-browser clamp) ========== */
-/* Fallback for all browsers */
 .blog-excerpt{
   --lines: 4;        /* number of lines */
   --lh: 1.6;         /* line height used below */
-  margin-top:8px;
+  margin-top:6px;
   line-height: var(--lh);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -119,7 +155,7 @@
   .blog-excerpt{
     max-height: none;
     display: block;
-    line-clamp: 4;
+    line-clamp: var(--lines);
   }
 }
 
@@ -137,19 +173,85 @@
 .blog-actions{
   margin-top:auto;
   padding-top:12px;
+  display:flex;                        /* ensure alignment works */
+  gap:10px;
+  align-items:center;
 }
 
-/* ========== Local btn-ghost (if not global) ========== */
+/* Local btn-ghost (if not global) */
 .btn-ghost{
   border:1.5px solid var(--border, #d7dee6) !important;
   background:transparent !important;
   color:var(--brand-ink, #086e90) !important;
   font-weight:800;
   border-radius:999px;
+  padding:10px 14px;                   /* ↑ consistent button padding */
+  line-height:1; 
 }
 
 /* Optional: stabilize card height on large grids */
 @media (min-width:900px){
-  .blog-card.card{ min-height: 360px; }
+  .blog-card.card{ min-height: 380px; } /* ↑ a bit taller with new paddings */
 }
 
+
+/* ====== app/blogs/blogs.css aesthetic tweaks ====== */
+.blogs-hero {
+  padding: 70px 20px 40px;
+  background: linear-gradient(180deg, var(--brand) 0%, #f6fbff 40%, #ffffff 100%);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.blogs-title {
+  font-weight: 900;
+  color: var(--brand-ink);
+  font-size: 2.6rem;
+  margin: 0 0 14px;
+  position: relative;
+}
+.blogs-title::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  margin: 10px auto 0;
+  background: var(--accent);
+  border-radius: 4px;
+}
+
+.blogs-subtitle {
+  color: var(--muted);
+  font-size: 1.2rem;
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ====== components/blog/blog.css tweaks ====== */
+.blog-card-body {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  background: var(--card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.blog-card-body:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(13, 168, 224, 0.15);
+}
+
+.blog-title {
+  color: var(--brand-ink);
+  font-size: 1.25rem;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.chip {
+  transition: all 0.2s ease;
+}
+.chip:hover {
+  background: rgba(13, 168, 224, 0.08);
+  border-color: var(--brand);
+}

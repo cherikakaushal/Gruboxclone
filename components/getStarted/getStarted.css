@@ -74,8 +74,17 @@ body, .gs-page{ background: var(--bg); color: var(--text); }
               radial-gradient(900px 520px at 110% 10%, #007ab0 0%, transparent 55%),
               linear-gradient(120deg, #0192b1, var(--accent) 38%, #007ab0);
 }
-.gs-hero{ padding: 72px 0 18px; position:relative; overflow:hidden; }
-.gs-hero-inner{ max-width: 1080px; }
+
+/* Responsive hero spacing + centered inner */
+.gs-hero{
+  padding: clamp(36px, 7vw, 92px) 0 clamp(12px, 2.5vw, 22px);
+  position:relative; overflow:hidden;
+}
+.gs-hero-inner{
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-inline: clamp(12px, 3vw, 20px);
+}
 .gs-hero-wave{ height: 20px; background: linear-gradient(180deg, rgba(0,0,0,.12), transparent); }
 .gs-hero-shapes::before,
 .gs-hero-shapes::after{
@@ -107,18 +116,21 @@ body, .gs-page{ background: var(--bg); color: var(--text); }
 
 /* ====== GRID / CARDS ===================================================== */
 .gs-grid{
-  max-width: 1200px;
+  /* centered grid with responsive padding */
+  width: min(1200px, 94vw);
+  margin: 0 auto;
+  padding-inline: clamp(12px, 3vw, 20px);
   display:grid; gap: 22px;
   grid-template-columns: minmax(0, 1fr) 360px;
 }
 @media (max-width: 1024px){ .gs-grid{ grid-template-columns: 1fr; } }
 
-/* Base card surface */
+/* Base card surface (responsive padding) */
 .gs-card{
   background: var(--card);
   border-radius: 18px;
   box-shadow: var(--shadow-md);
-  padding: 22px;
+  padding: clamp(16px, 3vw, 24px);
   border: 1px solid var(--border);
 }
 
@@ -284,7 +296,6 @@ body, .gs-page{ background: var(--bg); color: var(--text); }
 
 /* ===== Light-mode hardening: enforce readable text on bright surfaces ===== */
 html[data-theme="light"] {
-  /* make absolutely sure light tokens are used */
   --bg: #f7f9fc;
   --text: #0b0b0b;
   --muted: #5a6570;
@@ -339,3 +350,54 @@ html[data-theme="light"] .gs-list li { color: #404b55; }
 /* Keep gradient hero white text only in the hero */
 .gradient-panel,
 .gradient-panel * { color: #ffffff; }
+
+/* ====== FAQ SECTION: responsive spacing & padding ====== */
+
+/* Outer band spacing (top/bottom) */
+.gs-faq-wrap{
+  padding: clamp(24px, 6vw, 56px) 0 clamp(16px, 5vw, 44px);
+}
+
+/* Inner container width + side padding */
+.faq{
+  width: min(900px, 92vw);
+  margin: 0 auto;
+  padding-inline: clamp(12px, 3vw, 20px);
+  display: grid;
+  gap: clamp(10px, 2.4vw, 16px);
+}
+
+/* FAQ card/item padding */
+.faq-item{
+  border-radius: 14px;
+  padding: clamp(12px, 2.4vw, 18px) clamp(14px, 3vw, 22px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  background: var(--card);
+  transition: box-shadow .18s ease, transform .12s ease;
+}
+
+/* Title spacing inside summary */
+.faq-item summary{
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--text);
+  outline: none;
+  margin: 0;                         /* remove default */
+}
+
+/* Answer paragraph spacing */
+.faq-item p{
+  color: var(--muted);
+  margin: clamp(8px, 1.6vw, 12px) 2px 2px;
+}
+
+/* When open, small lift */
+.faq-item[open]{ transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* Optional: section heading above the FAQ block */
+.gs-faq-wrap .section-title{
+  width: min(900px, 92vw);
+  margin: 0 auto clamp(10px, 2vw, 16px);
+  padding-inline: clamp(12px, 3vw, 20px);
+}

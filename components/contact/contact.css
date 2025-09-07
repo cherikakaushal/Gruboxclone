@@ -1,4 +1,4 @@
-/* components/contact/contact.css — 3D form card, gradient borders, polished controls */
+/* components/contact/contact.css — flat card, gradient borders, polished controls (no 3D) */
 
 :root{
   --card: var(--card, #ffffff);
@@ -37,29 +37,22 @@
   box-shadow: var(--shadow-m);
 }
 
-/* Glass feel + 3D lift for the main form */
+/* Glass feel (kept, but purely flat) */
 .cx-glass{ backdrop-filter: saturate(160%) blur(10px); }
 
-/* << New 3D treatment >> */
+/* --- 3D/tilt REMOVED: keep a flat card with standard shadows --- */
 .cx-3d{
   position: relative;
-  transform-style: preserve-3d;
-  box-shadow:
-    0 1px 0 rgba(255,255,255,.65) inset,
-    0 -1px 0 rgba(10,10,10,.04) inset,
-    var(--shadow-s), var(--shadow-m), var(--shadow-l);
+  /* removed: transform-style, heavy stacked shadows */
+  box-shadow: var(--shadow-s), var(--shadow-m);
 }
-.cx-3d::after{
-  content:"";
-  position:absolute; inset:-1px;
-  border-radius:inherit;
-  background: radial-gradient(1000px 180px at 50% -60px, rgba(255,255,255,.55), transparent 60%);
-  pointer-events:none;
-  transform: translateZ(1px);
-}
+/* removed pseudo-shine */
+/* .cx-3d::after { ... } */
+
+/* no tilt on hover */
 .cx-tilt:hover{
-  transform: perspective(1200px) rotateX(1.1deg) rotateY(-.8deg) translateY(-1px);
-  transition: transform .25s ease;
+  transform: none;
+  transition: box-shadow .25s ease;
 }
 
 /* Gradient accent border on both cards */
@@ -109,13 +102,13 @@ html[data-theme="dark"] .cx-card{
   width:100%; border:1px solid var(--border);
   background: linear-gradient(180deg, color-mix(in srgb, var(--card), transparent 0%), color-mix(in srgb, var(--card), transparent 0%));
   color: var(--text); border-radius: 14px; padding: 12px 14px; outline:none; font: inherit;
-  transition: border-color .15s, box-shadow .15s, background .15s, transform .05s;
+  transition: border-color .15s, box-shadow .15s, background .15s;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.65), inset 0 -1px 0 rgba(0,0,0,.04);
 }
+/* removed translateZ bump on focus */
 .cx-input:focus{
   border-color: var(--accent);
   box-shadow: var(--ring), inset 0 1px 0 rgba(255,255,255,.65);
-  transform: translateZ(1px);
 }
 .cx-textarea{ resize: vertical; min-height: 140px; }
 

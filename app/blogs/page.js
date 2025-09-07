@@ -10,13 +10,14 @@ const SOURCES = [
   {
     key: "grubox",
     label: "Grubox",
+    // keep candidates; if none work we silently skip this source
     candidates: [
       "https://www.grubox.in/blog/rss.xml",
       "https://www.grubox.in/blog?format=rss",
       "https://www.grubox.in/blog/feed",
     ],
   },
-  { key: "medium",  label: "Medium", candidates: ["https://medium.com/feed/@gruboxdemo"] },
+  { key: "medium",  label: "Medium",  candidates: ["https://medium.com/feed/@gruboxdemo"] },
   { key: "tumblr",  label: "Tumblr",  candidates: ["https://gruboxblogs.tumblr.com/rss"] },
   { key: "blogger", label: "Blogger", candidates: ["https://gruboxblogs.blogspot.com/feeds/posts/default?alt=rss"] },
 ];
@@ -38,16 +39,12 @@ const MANUAL_POSTS = [
 function cleanXml(xml) {
   // Escape stray & and strip control chars that break XML parsers
   return xml
-    .replace(
-      /&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-fA-F]+;)/g,
-      "&amp;"
-    )
+    .replace(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-fA-F]+;)/g, "&amp;")
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "");
 }
 
 function firstParagraphFromHtml(html) {
   if (!html) return "";
-  // Prefer first <p>…</p>, fallback to whole html
   const m = html.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
   const fragment = (m ? m[1] : html)
     .replace(/<br\s*\/?>/gi, " ")
@@ -76,31 +73,45 @@ async function parseRss(xml) {
   return parser.parseString(cleanXml(xml));
 }
 
+// fetch one URL, but NEVER throw — return null on failure
 async function fetchOne(url) {
-  const res = await fetch(url, {
-    headers: {
-      "User-Agent": "GruboxFeedBot/1.0 (+https://www.grubox.in)",
-      Accept: "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
-    },
-    next: { revalidate },
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.text();
+  try {
+    const res = await fetch(url, {
+      headers: {
+        "User-Agent": "GruboxBlogs/1.0 (+https://www.grubox.in)",
+        Accept: "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
+      },
+      next: { revalidate },
+    });
+    if (!res.ok) {
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(`[feed] ${url} returned ${res.status}`);
+      }
+      return null;
+    }
+    return await res.text();
+  } catch (err) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(`[feed] request failed for ${url}:`, err?.message || err);
+    }
+    return null;
+  }
 }
 
 async function fetchSource({ key, label, candidates }) {
   for (const url of candidates) {
-    try {
-      const xml = await fetchOne(url);
-      const feed = await parseRss(xml);
+    const xml = await fetchOne(url);
+    if (!xml) continue;
 
+    try {
+      const feed = await parseRss(xml);
       const items = (feed.items || []).map((it, i) => {
         const title = it.title?.trim() || "Untitled";
         const link = (it.link || "").trim();
         const when =
           it.isoDate || it.pubDate || it.published || it.updated || new Date().toISOString();
 
-        // ✅ exactly one neat paragraph per card
+        // exactly one neat paragraph per card
         let excerpt = firstParagraphFromItem(it);
         if (excerpt.length > 260) excerpt = excerpt.slice(0, 257).trimEnd() + "…";
 
@@ -116,14 +127,18 @@ async function fetchSource({ key, label, candidates }) {
 
       if (items.length) return items;
     } catch (e) {
-      console.error(`[feed] ${label} failed on ${url}:`, e?.message || e);
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(`[feed] ${label} parse failed on ${url}:`, e?.message || e);
+      }
     }
   }
   return [];
 }
 
 async function getAllPosts() {
-  const results = await Promise.all(SOURCES.map(fetchSource));
+  const results = await Promise.all(
+    SOURCES.map((src) => fetchSource(src))
+  );
 
   // merge + dedupe by link (or title)
   const map = new Map();
@@ -133,14 +148,17 @@ async function getAllPosts() {
       if (!map.has(k)) map.set(k, p);
     }
   }
+  // Add guaranteed manual posts if needed
   for (const p of MANUAL_POSTS) {
     const k = p.link || p.title || p.id;
     if (!map.has(k)) map.set(k, p);
   }
 
-  return [...map.values()].sort(
+  const posts = [...map.values()].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
+
+  return posts;
 }
 
 export const metadata = {
@@ -151,6 +169,7 @@ export const metadata = {
 
 export default async function BlogsPage() {
   const posts = await getAllPosts();
+  const hasPosts = posts.length > 0;
   const sources = Array.from(new Set(posts.map((p) => p.source))).sort();
 
   return (
@@ -166,7 +185,24 @@ export default async function BlogsPage() {
 
       <section className="blogs-list w3-container">
         <div className="w3-content" style={{ maxWidth: 1120 }}>
-          <Blog posts={posts} sources={sources} />
+          {hasPosts ? (
+            <Blog posts={posts} sources={sources} />
+          ) : (
+            <div
+              className="w3-padding-32"
+              style={{
+                border: "1px solid var(--border)",
+                borderRadius: 12,
+                background: "var(--card)",
+                color: "var(--muted)",
+                textAlign: "center",
+              }}
+            >
+              <p style={{ margin: 0 }}>
+                No posts available right now. Please check back soon.
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </main>

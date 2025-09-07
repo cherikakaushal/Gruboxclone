@@ -1,59 +1,65 @@
-/* components/About/about.css */
+/* components/About/about.css — COMPONENT POLISH (scoped under .about-page) */
 
-/* badges used in compliance/feature cards */
-.badge{
-  display:inline-block; padding:6px 12px; border-radius:999px;
+/* Badges */
+.about-page .badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:8px 14px; border-radius:999px;
   border:1.5px solid var(--border); background:var(--card);
-  color:var(--brand-ink); font-weight:800; font-size:13px;
+  color:var(--brand-ink); font-weight:800; font-size:14px; line-height:1;
 }
 
-/* ensure nothing in cards gets dimmed */
-.card .w3-opacity,
-.card .w3-opacity-min,
-.card .w3-opacity-max{ opacity:1 !important; }
+/* Prevent W3 opacity from dimming card contents */
+.about-page .card .w3-opacity,
+.about-page .card .w3-opacity-min,
+.about-page .card .w3-opacity-max{ opacity:1 !important; }
 
-/* === VISIBILITY FIX PACK FOR HIGHLIGHTS === */
-.about-highlights .card{
-  background: var(--card);
-  border: 1.5px solid var(--border);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
+/* Highlights grid */
+.about-page .about-highlights{ display:grid; gap:clamp(14px, 2.6vw, 20px); }
+@media (min-width:768px){ .about-page .about-highlights{ grid-template-columns:repeat(3,1fr); } }
+
+/* Highlight cards */
+.about-page .about-highlights .card{
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:18px;
+  box-shadow:0 10px 26px var(--edge);
+  padding:clamp(16px, 2.6vw, 24px);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.about-page .about-highlights .card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 32px var(--edge);
 }
 
-/* kill any leftover opacity/blend/white text inside these three cards */
-.about-highlights .card *,
-.about-highlights .card .w3-text-white{
-  color: var(--text) !important;
-  opacity: 1 !important;
-  filter: none !important;
-  mix-blend-mode: normal !important;
-  text-shadow: none !important;
+/* Titles/text */
+.about-page .highlight-title{
+  font-weight:900; color:var(--brand-ink);
+  margin:0 0 10px; font-size:clamp(16px,1.8vw,20px); line-height:1.3;
 }
+.about-page .highlight-text{ color:var(--text) !important; margin:0; line-height:1.6; }
 
-/* strong, on-brand headings */
-.highlight-title{
-  font-weight: 900;
-  color: var(--brand-ink);
-  margin-bottom: 8px;
-  font-size: 18px;
+/* Values list */
+.about-page .highlight-list{ list-style:none; padding:0; margin:8px 0 0; }
+.about-page .highlight-list li{ color:var(--text) !important; padding:12px 0; border-top:1px solid var(--border); }
+.about-page .highlight-list li:first-child{ border-top:0; }
+
+/* KPI helpers (component side, matches page CSS) */
+.about-page .kpi-card{
+  margin-top:clamp(18px,3.6vw,36px);
+  padding:clamp(16px,3vw,28px);
+  border-radius:16px; background:var(--card);
+  border:1px solid var(--border); box-shadow:0 10px 26px var(--edge);
 }
-
-/* paragraph text */
-.highlight-text{ color: var(--text) !important; }
-
-/* visible list items & dividers in light mode */
-.highlight-list{
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
+.about-page .kpi-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:clamp(12px,2vw,24px); text-align:center;
 }
-.highlight-list li{
-  color: var(--text) !important;
-  border-color: var(--border) !important;
-  padding: 10px 0;
-}
-.highlight-list li + li{ border-top: 1px solid var(--border); }
+.about-page .kpi-num{ color:var(--brand-ink); font-size:clamp(28px,4vw,44px); font-weight:900; line-height:1.05; margin:0 0 4px; }
+.about-page .kpi-sub{ color:var(--muted); font-size:clamp(12px,1.4vw,14px); margin:0; }
 
-/* (in case KPI box up top was faint) */
-.kpi-num{ color: var(--brand-ink) !important; }
-.kpi-sub{ color: var(--muted) !important; }
+/* Dark: subtle gradient so cards pop */
+[data-theme="dark"] .about-page .about-highlights .card,
+[data-theme="dark"] .about-page .kpi-card{
+  background:linear-gradient(180deg,#151a1f,#0e1216);
+  border:1px solid rgba(255,255,255,.08);
+}

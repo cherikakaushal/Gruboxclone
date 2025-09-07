@@ -1,406 +1,257 @@
-/* app/about/about.css  — FINAL, HIGH-CONTRAST LIGHT THEME */
+/* app/about/about.css — CLEAN + CONSOLIDATED, THEME-AWARE */
 
 /* =========================
-   Brand & Theme Tokens
+   Brand & Theme Tokens (scoped)
    ========================= */
-:root {
-  /* Brand */
-  --brand: #0da8e0;          /* cyan */
-  --brand-ink: #086e90;      /* deep teal for headings */
-  --brand-strong: #0b2b36;   /* dark teal for deep areas */
-  --accent: #ffd75c;         /* amber */
+.about-page {
+  --brand: #0da8e0;
+  --brand-ink: #086e90;
+  --brand-strong: #0b2b36;
+  --accent: #ffd75c;
 
-  /* Light surface (high contrast) */
+  /* Light */
   --bg: #ffffff;
+  --surface: #f6fbff; /* hero tint */
   --card: #ffffff;
-  --text: #0e2433;           /* navy-ish ink */
-  --muted: #425466;          /* secondary ink */
-  --border: #d7dee6;         /* crisp divider */
-  --shadow: 0 14px 28px rgba(7, 28, 42, .10);
+  --text: #0e2433;
+  --muted: #5b6c7b;
+  --border: #e3e9ef;
+  --edge: rgba(13,168,224,.14);
+  --shadow: 0 12px 24px rgba(7,28,42,.08);
 }
-
-[data-theme="dark"] {
-  --bg: #0f1418;
+[data-theme="dark"] .about-page {
+  --bg: #0e1216;
+  --surface: #0b151b;
   --card: #151a1f;
   --text: #e9eef3;
   --muted: #b6c1ca;
-  --border: rgba(255,255,255,.10);
+  --border: rgba(255,255,255,.12);
+  --edge: rgba(13,168,224,.18);
   --shadow: 0 18px 36px rgba(0,0,0,.38);
 }
 
 /* =========================
-   Surface + Hard Overrides
+   Page + Sections
    ========================= */
 .about-page { background: var(--bg); color: var(--text); }
+.section { padding: clamp(40px, 6vw, 88px) 20px; }
+.section > .w3-content { max-width: 1120px; margin: 0 auto; }
 
-/* kill translucency/white text that washed out light mode */
-.about-page [class*="w3-opacity"] { opacity: 1 !important; }
-.about-page .w3-text-white,
-.about-page [style*="color: white"] { color: var(--text) !important; }
-
-/* ensure everything inside cards stays readable */
-.about-page .card,
-.about-page .card * {
-  color: inherit !important;
-  text-shadow: none !important;
-  filter: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* =========================
-   Layout & Typography
-   ========================= */
-.section { padding: 48px 16px; }
-@media (min-width: 992px) { .section { padding: 72px 0; } }
-
-/* subtle hero band */
 .about-page .section:first-of-type {
-  background: linear-gradient(180deg, #f6fbff 0%, #ffffff 60%);
+  background: linear-gradient(180deg, var(--surface) 0%, #ffffff 65%);
   border-bottom: 1px solid var(--border);
 }
 
+/* =========================
+   Typography
+   ========================= */
 .section-title {
-  margin: 0 0 10px;
+  margin: 0 0 14px;
   font-weight: 900;
-  letter-spacing: .2px;
   color: var(--brand-ink);
+  font-size: clamp(22px, 3vw, 32px);
+  line-height: 1.3;
 }
-.section-subtitle { margin: 0 0 24px; color: var(--muted); }
+.section-subtitle {
+  margin: 0 auto 28px;
+  color: var(--muted);
+  max-width: 720px;
+  font-size: clamp(14px, 1.6vw, 18px);
+  line-height: 1.6;
+  text-align: center;
+}
 .muted { color: var(--muted) !important; }
 
 /* Links */
-.about-page a { color: var(--brand-ink); text-decoration: none; }
-.about-page a:hover { text-decoration: underline; }
+.about-page a { color: var(--brand-ink); text-decoration: none; transition: color .15s; }
+.about-page a:hover { color: var(--brand); text-decoration: underline; }
 
 /* =========================
    Cards & Buttons
    ========================= */
-.card {
+.about-page .card{
   background: var(--card);
+  color: var(--text);
   border: 1.5px solid var(--border);
   border-radius: 18px;
-  box-shadow: var(--shadow);
+  padding: clamp(16px, 2.6vw, 24px);
+  box-shadow: 0 10px 26px var(--edge);
+  transition: transform .18s, box-shadow .18s, border-color .18s;
 }
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--brand) 0%, #1adaea 100%) !important;
-  color: #fff !important;
-  font-weight: 900;
-  border-radius: 999px;
-  border: 1px solid rgba(0,0,0,.06) !important;
-  padding: 12px 20px;
-  box-shadow: 0 16px 32px rgba(13,168,224,.28);
+.about-page .card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px var(--edge);
+  border-color: color-mix(in oklab, var(--border), var(--brand) 26%);
 }
-.btn-ghost {
-  background: transparent !important;
-  color: var(--brand-ink) !important;
-  border: 1.5px solid var(--border) !important;
-  border-radius: 999px;
-  font-weight: 800;
-  padding: 12px 20px;
-}
-
-/* =========================
-   KPI Block
-   ========================= */
-.kpi-num { font-size: 36px; font-weight: 900; line-height: 1.05; color: var(--brand-ink); }
-.kpi-sub { font-size: 12px; color: var(--muted); }
-
-/* =========================
-   Mission • Vision • Values
-   ========================= */
-.about-highlights .highlight-title {
-  color: var(--brand-ink) !important;
-  font-weight: 900;
-  margin-bottom: 8px;
-  font-size: 18px;
-}
-.about-highlights .highlight-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-.about-highlights .highlight-list li {
-  color: var(--text) !important;
-  padding: 10px 0;
-  border-top: 1px solid var(--border) !important;
-}
-.about-highlights .highlight-list li:first-child { border-top: 0 !important; }
-
-/* make w3 list dividers visible in light mode anywhere */
-.about-page .w3-ul li { border-color: var(--border) !important; }
-
-/* =========================
-   Timeline
-   ========================= */
-.timeline { position: relative; margin: 16px 0 0 10px; padding-left: 16px; }
-.timeline::before {
-  content: ""; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px;
-  background: linear-gradient(#cfe6f1, #eef6fb);
-}
-.tl-item {
-  position: relative; margin: 18px 0; padding: 22px 22px 18px;
-  background: var(--card); border: 1.5px solid var(--border);
-  border-radius: 16px; box-shadow: var(--shadow);
-}
-.tl-item::before {
-  content: ""; position: absolute; left: -13px; top: 26px; width: 14px; height: 14px;
-  border-radius: 50%; background: radial-gradient(circle at 30% 30%, #7be2ff, var(--brand));
-  box-shadow: 0 0 0 4px var(--bg);
-}
-.tl-badge {
-  display: inline-block; background: var(--accent); color: #0b0f14;
-  font-weight: 900; font-size: 12px; padding: 4px 12px; border-radius: 999px;
-  border: 1px solid rgba(0,0,0,.06); margin-bottom: 8px;
-}
-.tl-title { margin: 4px 0 6px; font-weight: 900; color: var(--brand-ink); }
-
-/* =========================
-   News Section
-   ========================= */
-.news-section {
-  background: linear-gradient(160deg, var(--brand-strong) 0%, #0b2b36 100%);
-  color: #fff; padding: 80px 16px;
-}
-.news-header {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; margin: 0 auto 24px; max-width: 1120px;
-}
-.news-header h2 { margin: 0; font-weight: 900; }
-.news-arrows button {
-  width: 42px; height: 42px; border-radius: 999px; font-size: 22px; line-height: 0;
-  border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.06); color: #fff;
-}
-
-.news-row {
-  max-width: 1120px; margin: 0 auto; display: grid; gap: 18px;
-  grid-auto-flow: column; grid-auto-columns: 85%;
-  overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px;
-}
-@media (min-width: 768px)  { .news-row { grid-auto-columns: 42%; } }
-@media (min-width: 1100px) { .news-row { grid-auto-columns: 32%; } }
-
-.news-card {
-  scroll-snap-align: start; display: block; text-decoration: none;
-  background: #ffffff; color: #1f2937; border: 1px solid #e6edf3;
-  border-radius: 16px; padding: 20px 20px 22px; min-height: 160px;
-  box-shadow: 0 14px 26px rgba(0,0,0,.12);
-}
-.news-card:hover { transform: translateY(-2px); transition: transform .15s ease; }
-.news-source {
-  display: inline-block; font-weight: 900; font-size: 12px; color: #0b0f14;
-  background: var(--accent); border: 1px solid rgba(0,0,0,.06);
-  border-radius: 999px; padding: 4px 10px; margin-bottom: 10px;
-}
-.news-title { font-weight: 900; line-height: 1.25; color: #0f172a; }
-.news-meta  { color: #6b7280; font-size: 12px; margin-top: 8px; }
-
-/* =========================
-   Optional Colored Bands
-   ========================= */
-.band-sky   { background: linear-gradient(180deg, #f2fbff, #ffffff); }
-.band-amber { background: linear-gradient(180deg, #fff7df, #fff5d0); }
-.band-mint  { background: linear-gradient(180deg, #efffff, #ffffff); }
-
-/* === VISIBILITY PATCH (LIGHT MODE) — paste at end === */
-
-/* Stop any leftover translucency/white text */
-.about-page [class*="w3-opacity"]{ opacity:1 !important; }
-.about-page .w3-text-white,
-.about-page [style*="color: white"]{ color:var(--text) !important; }
-
-/* Make ALL text inside cards readable */
-.about-page .card h1,
-.about-page .card h2,
-.about-page .card h3,
-.about-page .card h4,
-.about-page .card p,
-.about-page .card li,
-.about-page .card a,
-.about-page .card span,
-.about-page .card div {
-  color: var(--text) !important;
-  text-shadow: none !important;
-  mix-blend-mode: normal !important;
-  filter: none !important;
-}
-
-/* Strong titles inside cards */
-.about-page .card .highlight-title,
-.about-page .card .w3-large,
-.about-page .kpi-num {
-  color: var(--brand-ink) !important;
-  font-weight: 900 !important;
-}
-
-/* Value list lines visible in light mode */
-.about-page .w3-ul li { border-color: var(--border) !important; }
-
-/* Badges/pills inside compliance cards — force visible text */
-.about-page .badge,
-.about-page .badge * {
-  color: var(--brand-ink) !important;
-}
-.about-page .badge{
-  display:inline-block;
-  padding:8px 14px;
-  border-radius:999px;
-  border:1.5px solid var(--border);
-  background:#fff;
-  font-weight:800;
-}
-
-/* CTA buttons: make the ghost label visible, primary stays white text */
-.about-page .btn-primary,
-.about-page .btn-primary *{ color:#fff !important; }
-.about-page .btn-ghost,
-.about-page .btn-ghost *{ color:var(--brand-ink) !important; }
-
-/* === FINAL VISIBILITY PATCH (LIGHT MODE) — place at end of app/about/about.css === */
-
-/* 1) Absolutely force readable text inside ALL white cards/pills */
-.about-page .card,
-.about-page .card * {
-  color: var(--text) !important;          /* stop inheriting white */
-  opacity: 1 !important;                  /* cancel any w3-opacity */
-  text-shadow: none !important;
-  mix-blend-mode: normal !important;
-  filter: none !important;
-}
-
-/* 2) Keep headings branded (after the global force above) */
-.about-page .card h1,
-.about-page .card h2,
-.about-page .card h3,
-.about-page .card h4,
-.about-page .highlight-title,
-.about-page .kpi-num {
-  color: var(--brand-ink) !important;
-  font-weight: 900 !important;
-}
-
-/* 3) Make list items in Values & w3 lists actually show text + visible rules */
-.about-page .highlight-list li,
-.about-page .w3-ul li {
-  color: var(--text) !important;
-  border-color: var(--border) !important;
-  background: transparent !important;
-  display: flex;
-  align-items: center;
-  padding: 12px 0;
-}
-
-/* 4) Pills / badges (those oval shapes that looked empty) */
-.about-page .badge,
-.about-page .badge * {
-  color: var(--brand-ink) !important;
-}
-.about-page .badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 14px;
-  line-height: 1;
-  font-size: 14px;
-  font-weight: 800;
-  border-radius: 999px;
-  border: 1.5px solid var(--border);
-  background: #fff;
-}
-
-/* 5) CTA buttons: primary stays white text, ghost uses brand ink (so labels never “disappear”) */
-.about-page .btn-primary,
-.about-page .btn-primary * { color: #fff !important; }
-.about-page .btn-ghost,
-.about-page .btn-ghost *   { color: var(--brand-ink) !important; }
-
-/* === FINAL, SCOPED VISIBILITY OVERRIDES === */
-
-/* Stop any leftover opacity/white text from w3.css */
-.about-page [class*="w3-opacity"] { opacity: 1 !important; }
-.about-page .w3-text-white,
-.about-page [style*="color: white"] { color: var(--text) !important; }
-
-/* Make ALL text inside cards/pills readable (the missing text you see) */
-.about-page .card,
-.about-page .card * {
-  color: var(--text) !important;
+.about-page .card *{
+  color: inherit !important;
   opacity: 1 !important;
   text-shadow: none !important;
   mix-blend-mode: normal !important;
   filter: none !important;
 }
 
-/* Re-apply brand color to headings/KPIs after the global force above */
-.about-page .card h1,
-.about-page .card h2,
-.about-page .card h3,
-.about-page .card h4,
-.about-page .highlight-title,
-.about-page .kpi-num {
-  color: var(--brand-ink) !important;
-  font-weight: 900 !important;
-}
-
-/* Values list + any w3 lists: visible rules & text */
-.about-page .highlight-list li,
-.about-page .w3-ul li {
-  color: var(--text) !important;
-  border-color: var(--border) !important;
-  background: transparent !important;
-  display: flex;
-  align-items: center;
-  padding: 12px 0;
-}
-
-/* Pills/badges inside the compliance cards */
-.about-page .badge,
-.about-page .badge * { color: var(--brand-ink) !important; }
-.about-page .badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 14px;
-  line-height: 1;
-  font-size: 14px;
+.btn-primary {
+  background: linear-gradient(135deg, var(--brand) 0%, #1adaea 100%);
+  color: #fff !important;
   font-weight: 800;
   border-radius: 999px;
+  border: none;
+  padding: 12px 22px;
+  box-shadow: 0 12px 28px rgba(13,168,224,.25);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--brand-ink);
   border: 1.5px solid var(--border);
-  background: #fff;
+  border-radius: 999px;
+  font-weight: 700;
+  padding: 12px 22px;
+  transition: background .15s;
+}
+.btn-ghost:hover { background: rgba(13,168,224,.05); }
+
+/* =========================
+   Hero
+   ========================= */
+.about-page .section.hero{
+  padding: clamp(48px, 6vw, 96px) 20px;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, var(--surface) 0%, transparent 60%),
+    linear-gradient(180deg, transparent 0%, rgba(0,0,0,.02) 100%);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+[data-theme="dark"] .about-page .section.hero{
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(13,168,224,.08) 0%, transparent 60%),
+    linear-gradient(180deg, transparent 0%, rgba(255,255,255,.02) 100%);
+}
+.about-page .section-title.hero-title{
+  font-size: clamp(28px, 3.6vw, 48px);
+  margin: 0 0 10px;
+}
+.about-page .section-subtitle.hero-sub{
+  max-width: 780px;
+  margin: 0 auto;
+}
+.about-page .hero-ctas{
+  margin-top: 18px;
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
 }
 
-/* CTA buttons: make sure labels are visible */
-.about-page .btn-primary,
-.about-page .btn-primary * { color: #fff !important; }
-.about-page .btn-ghost,
-.about-page .btn-ghost *   { color: var(--brand-ink) !important; }
+/* =========================
+   KPI Block
+   ========================= */
+.about-page .kpi-card{
+  margin-top: clamp(18px, 3.6vw, 36px);
+  padding: clamp(16px, 3vw, 28px);
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 26px var(--edge);
+}
+.about-page .kpi-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: clamp(12px, 2vw, 24px);
+  text-align: center;
+}
+.about-page .kpi-num{
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 900;
+  color: var(--brand-ink);
+  margin: 0 0 4px;
+  line-height: 1.05;
+}
+.about-page .kpi-sub{
+  font-size: clamp(12px, 1.4vw, 14px);
+  color: var(--muted);
+}
 
-/* TEMP: force readable text in every white card across the site */
-:root body .card, :root body .card * { color: #0e2433 !important; }
+/* =========================
+   Highlights
+   ========================= */
+.about-page .about-highlights{
+  display: grid;
+  gap: clamp(14px, 2.6vw, 20px);
+}
+@media (min-width: 768px){
+  .about-page .about-highlights{ grid-template-columns: repeat(3, 1fr); }
+}
+.about-page .highlight-title{
+  font-size: clamp(16px, 1.8vw, 20px);
+  margin: 0 0 10px;
+  font-weight: 900;
+  color: var(--brand-ink);
+}
+.about-page .highlight-list{
+  list-style: none; padding: 0; margin: 8px 0 0;
+}
+.about-page .highlight-list li{
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+.about-page .highlight-list li:first-child{ border-top: 0; }
 
-/* Smooth anchor jump everywhere */
-html { scroll-behavior: smooth; }
+/* =========================
+   Timeline
+   ========================= */
+.timeline { position: relative; margin: 20px 0 0 12px; padding-left: 20px; }
+.timeline::before {
+  content: ""; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(var(--brand), transparent);
+}
+.tl-item {
+  position: relative; margin: 22px 0; padding: 24px;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 16px; box-shadow: var(--shadow);
+}
+.tl-item::before {
+  content: ""; position: absolute; left: -13px; top: 28px; width: 14px; height: 14px;
+  border-radius: 50%; background: radial-gradient(circle at 30% 30%, #7be2ff, var(--brand));
+  box-shadow: 0 0 0 4px var(--bg);
+}
+.tl-badge {
+  display: inline-block; background: var(--accent); color: #0b0f14;
+  font-weight: 800; font-size: 12px; padding: 4px 12px; border-radius: 999px; margin-bottom: 8px;
+}
+.tl-title { margin: 6px 0; font-weight: 900; color: var(--brand-ink); }
 
-/* CTA layout */
+/* =========================
+   News Section (optional)
+   ========================= */
+.news-section {
+  background: linear-gradient(160deg, var(--brand-strong) 0%, #0b2b36 100%);
+  color: #fff; padding: 72px 20px;
+}
+.news-header {
+  max-width: 1120px; margin: 0 auto 32px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.news-header h2 { margin: 0; font-weight: 900; }
+.news-row {
+  max-width: 1120px; margin: 0 auto; display: grid; gap: 20px;
+  grid-auto-flow: column; grid-auto-columns: 85%; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-bottom: 12px;
+}
+@media (min-width: 768px)  { .news-row { grid-auto-columns: 42%; } }
+@media (min-width: 1100px) { .news-row { grid-auto-columns: 32%; } }
+.news-card {
+  scroll-snap-align: start; background: #fff; border: 1px solid #e6edf3; border-radius: 16px;
+  padding: 20px; min-height: 160px; color: #0e2433; box-shadow: 0 12px 22px rgba(0,0,0,.1);
+  transition: transform .15s;
+}
+.news-card:hover { transform: translateY(-3px); }
+
+/* =========================
+   Utilities
+   ========================= */
 .cta-row { display:flex; gap:12px; align-items:center; }
 .cta-row-center { justify-content:center; }
 .cta-micro { margin-top:8px; color:var(--muted); }
+html { scroll-behavior: smooth; }
 
-/* Optional sticky CTA on mobile */
-.sticky-cta{
-  position: fixed;
-  left: 0; right: 0; bottom: env(safe-area-inset-bottom, 0);
-  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0));
-  background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.95));
-  backdrop-filter: blur(6px);
-  display: none;
-  gap: 8px;
-  z-index: 40;
-  border-top: 1px solid var(--border);
-}
-.sticky-cta__btn{ flex:1 1 0; text-align:center; }
-
-/* Only show sticky bar on small screens */
-@media (max-width: 640px){
-  .sticky-cta{ display:flex; }
-}
+/* Beat W3 opacity + white text */
+.about-page [class*="w3-opacity"]{ opacity:1 !important; }
+.about-page .w3-text-white{ color:var(--text) !important; }
